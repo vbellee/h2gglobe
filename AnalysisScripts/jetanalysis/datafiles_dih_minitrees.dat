@@ -1,0 +1,37 @@
+## intL=19620. histfile=/store/cmst3/user/musella/hgg/vbf_optimization/%(label)s/vbfanalysis.root output=eventsList.txt
+intL=19620. histfile=diH_studies.root output=eventsList.txt
+#intL=5346. histfile=/store/cmst3/user/malberti/HIGGS/VBF/%(label)s/vbfanalysis.root output=eventsList.txt
+#intL=5346. histfile=/tmp/malberti/vbfanalysis.root output=eventsList.txt
+#intL=5346. histfile=vbfanalysis.root output=eventsList.txt
+
+#setmacro reduced:/store/group/phys_higgs/cmshgg/reduced
+#setmacro moriond_mc:%(reduced)s/moriond2013_reduction_v1/mc/Summer12_S10_8TeV
+#setmacro moriond_data:%(reduced)s/moriond2013_reduction_v2/data
+#setmacro vbfopt:%(reduced)s/reduction_vbf_optimization_v1/mc/Summer12_RD_DR53X-PU_S10_START53_V7C
+
+##
+## Signal 125
+## 
+typ=-37 ind=1 draw=1   Nam=ggh_m125_8TeV   		CaDir=%(moriond_mc)s/GluGluToHToGG_M-125_8TeV-powheg-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1
+typ=-38 ind=2 draw=1   Nam=vbf_m125_8TeV   		CaDir=%(moriond_mc)s/VBF_HToGG_M-125_8TeV-powheg-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1
+typ=-40 ind=4 draw=1   Nam=wzh_m125_8TeV   		CaDir=%(moriond_mc)s/WH_ZH_HToGG_M-125_8TeV-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1
+
+##
+## Branches to use
+##
+inputBranches minimal_analysis_input.dat
+inputBranches baseline/minimal_statanalysis_input.dat
+inputBranches massfac_mva_binned/massfactorizedmvaanalysis_input.dat 
+
+plotvariables common/plotvariables_none.dat
+#plotvariables jetanalysis/plotvariables.dat
+runZeeValidation=0
+
+## define analyses to run
+## 	a library containing the class dictionary has loaded before parsing the 
+## 	configuration file
+## syntax:
+## 	analyzer <class_name> <config_file>
+## 
+## analyzer PhotonAnalysis photonanalysis.dat	
+analyzer VbfAnalysis photonanalysis.dat analysis_settings.dat  massfac_mva_binned/massfactorizedmvaanalysis.dat  jetanalysis/vbfanalysis.dat requireTwoJets=1

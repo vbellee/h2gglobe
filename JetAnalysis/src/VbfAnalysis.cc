@@ -23,7 +23,10 @@ TreeVariables::TreeVariables() :
     diphopt(0),		
     diphoM(0),		
     diphoEta(999),	
-    dijetEta(999),	
+    dijetEta(999),
+    jet1p4(0),
+    jet2p4(0),
+    jet3p4(0),
     jet1isMatched(false),	
     jet2isMatched(false),	
     jet1genPt(0),	
@@ -130,6 +133,7 @@ void VbfAnalysis::Init(LoopAll& l)
 	    tree_.entry = 0;
 	}
 	
+	tree_.jet3p4 = 0; tree_.jet2p4 = 0; tree_.jet1p4 = 0;
 	l.BookExternalTreeBranch( "entry",         &tree_.entry, "vbfAnalysis" );         
 	l.BookExternalTreeBranch( "weight",        &tree_.weight, "vbfAnalysis" );         
 	l.BookExternalTreeBranch( "sampleweight",  &tree_.sampleweight, "vbfAnalysis" );         
@@ -139,6 +143,9 @@ void VbfAnalysis::Init(LoopAll& l)
 	l.BookExternalTreeBranch( "diphoM",        &tree_.diphoM, "vbfAnalysis" );        
 	l.BookExternalTreeBranch( "diphoEta",      &tree_.diphoEta, "vbfAnalysis" );      
 	l.BookExternalTreeBranch( "dijetEta",      &tree_.dijetEta, "vbfAnalysis" );      
+	l.BookExternalTreeBranch("jet3p4",&tree_.jet3p4,32000,0, "vbfAnalysis");
+	l.BookExternalTreeBranch("jet2p4",&tree_.jet2p4,32000,0, "vbfAnalysis");
+	l.BookExternalTreeBranch("jet1p4",&tree_.jet1p4,32000,0, "vbfAnalysis");
 	l.BookExternalTreeBranch( "jet1",          &tree_.jet1, "vbfAnalysis" ); 
 	l.BookExternalTreeBranch( "jet2",          &tree_.jet2, "vbfAnalysis" ); 
 	l.BookExternalTreeBranch( "jet3",          &tree_.jet3, "vbfAnalysis" ); 
@@ -337,14 +344,18 @@ bool VbfAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentzV
 	    //else if ( ijet1!=-1 && ijet2!=-1 ) break;
 	}
 	
-	TLorentzVector* jet1=(ijet1>=0?(TLorentzVector*)l.jet_algoPF1_p4->At(ijet1):0);
-	TLorentzVector* jet2=(ijet2>=0?(TLorentzVector*)l.jet_algoPF1_p4->At(ijet2):0);
-	TLorentzVector* jet3=(ijet3>=0?(TLorentzVector*)l.jet_algoPF1_p4->At(ijet3):0);
+	TLorentzVector* jet1=(ijet1>=0?(TLorentzVector*)l.jet_algoPF1_p4->At(ijet1)->Clone():new TLorentzVector(0,0,0,0));
+	TLorentzVector* jet2=(ijet2>=0?(TLorentzVector*)l.jet_algoPF1_p4->At(ijet2)->Clone():new TLorentzVector(0,0,0,0));
+	TLorentzVector* jet3=(ijet3>=0?(TLorentzVector*)l.jet_algoPF1_p4->At(ijet3)->Clone():new TLorentzVector(0,0,0,0));
 	TLorentzVector sumj1;
 	TLorentzVector sumj2;
 	TLorentzVector dijet;
 	
 	TLorentzVector diphoton = lead_p4+sublead_p4;
+	
+	tree_.jet1p4 = jet1;
+	tree_.jet2p4 = jet2;
+	tree_.jet3p4 = jet3;
 
 	if( ijet1 >= 0 && ijet2 >= 0) {
 
@@ -445,6 +456,10 @@ bool VbfAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentzV
 
 	    fillControlPlots(lead_p4, sublead_p4, Higgs, lead_r9, sublead_r9, diphoton_id,
 			     category, isCorrectVertex, evweight, vtx, l, 0, -1, 0, -1 );
+	    
+	    delete jet1;
+	    delete jet2;
+	    delete jet3;
 	}
 	return false;
     }

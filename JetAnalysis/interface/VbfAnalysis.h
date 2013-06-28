@@ -34,6 +34,8 @@ public:
     float diphoM;
     float diphoEta;
     float dijetEta;
+    
+    TLorentzVector * jet1p4, * jet2p4, * jet3p4;
     float jet1isMatched,jet2isMatched;
     float jet1genPt,jet2genPt;
     float jet1genDr,jet2genDr;
@@ -41,7 +43,7 @@ public:
     bool  jet1PileupID,jet2PileupID ;
     bool  isSignal;
     int   mctype;
-
+    
     float pho1energy;
     float pho2energy;
     float pho1Phi;
