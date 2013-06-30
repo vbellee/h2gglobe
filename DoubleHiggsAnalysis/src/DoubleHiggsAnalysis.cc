@@ -1,6 +1,6 @@
-#include "../interface/VbfAnalysis.h"
+#include "../interface/DoubleHiggsAnalysis.h"
 
-#include "../interface/JetHandler.h"
+#include "../../JetAnalysis/interface/JetHandler.h"
 
 #include "Sorters.h"
 #include "PhotonReducedInfo.h"
@@ -14,7 +14,7 @@
 using namespace std;
 
 // ----------------------------------------------------------------------------------------------------
-TreeVariables::TreeVariables() : 
+DoubleHiggsTreeVariables::DoubleHiggsTreeVariables() : 
     entry(0),		
     weight(0),		
     sampleweight(0),		
@@ -73,9 +73,9 @@ TreeVariables::TreeVariables() :
 {}
 
 // ----------------------------------------------------------------------------------------------------
-VbfAnalysis::VbfAnalysis()  
+DoubleHiggsAnalysis::DoubleHiggsAnalysis()  
 {
-    name_ = "VbfAnalysis";
+    name_ = "DoubleHiggsAnalysis";
 
     recomputeJetId = false;
     expoMatching   = false;
@@ -87,12 +87,12 @@ VbfAnalysis::VbfAnalysis()
 }
 
 // ----------------------------------------------------------------------------------------------------
-VbfAnalysis::~VbfAnalysis() 
+DoubleHiggsAnalysis::~DoubleHiggsAnalysis() 
 {
 }
 
 // ----------------------------------------------------------------------------------------------------
-void VbfAnalysis::Term(LoopAll& l) 
+void DoubleHiggsAnalysis::Term(LoopAll& l) 
 {
     if( dumpFlatTree ) {
 	//// if( outputFile_ ) {
@@ -108,7 +108,7 @@ void VbfAnalysis::Term(LoopAll& l)
 }
 
 // ----------------------------------------------------------------------------------------------------
-void VbfAnalysis::Init(LoopAll& l) 
+void DoubleHiggsAnalysis::Init(LoopAll& l) 
 {  
     if( l.runZeeValidation ) {
 	leadEtCut = 15;
@@ -127,93 +127,93 @@ void VbfAnalysis::Init(LoopAll& l)
 
     if( dumpFlatTree ) {
 	if( flatTree_ == 0 ) { 
-	    //// outputFile_ = TFile::Open("vbfAnalysisTree_"+l.histFileName,"recreate");
+	    //// outputFile_ = TFile::Open("doubleHiggsAnalysisTree_"+l.histFileName,"recreate");
 	    //// flatTree_ = new TTree("flatTree","flatTree");
-	    l.InitTrees("vbfAnalysis");
+	    l.InitTrees("doubleHiggsAnalysis");
 	    tree_.entry = 0;
 	}
 	
 	//// tree_.jet3p4 = 0; tree_.jet2p4 = 0; tree_.jet1p4 = 0;
 	delete default_.jet1p4; delete default_.jet2p4; delete default_.jet3p4;
 	default_.jet1p4 = tree_.jet1p4; default_.jet2p4 = tree_.jet2p4;  default_.jet3p4 = tree_.jet3p4;
-	l.BookExternalTreeBranch( "entry",         &tree_.entry, "vbfAnalysis" );         
-	l.BookExternalTreeBranch( "weight",        &tree_.weight, "vbfAnalysis" );         
-	l.BookExternalTreeBranch( "sampleweight",  &tree_.sampleweight, "vbfAnalysis" );         
-	l.BookExternalTreeBranch( "pho1pt",        &tree_.pho1pt, "vbfAnalysis" );        
-	l.BookExternalTreeBranch( "pho2pt",        &tree_.pho2pt, "vbfAnalysis" );        
-	l.BookExternalTreeBranch( "diphopt",       &tree_.diphopt, "vbfAnalysis" );       
-	l.BookExternalTreeBranch( "diphoM",        &tree_.diphoM, "vbfAnalysis" );        
-	l.BookExternalTreeBranch( "diphoEta",      &tree_.diphoEta, "vbfAnalysis" );      
-	l.BookExternalTreeBranch( "dijetEta",      &tree_.dijetEta, "vbfAnalysis" );      
-	l.BookExternalTreeBranch("jet3p4",&(tree_.jet3p4),32000,0, "vbfAnalysis");
-	l.BookExternalTreeBranch("jet2p4",&(tree_.jet2p4),32000,0, "vbfAnalysis");
-	l.BookExternalTreeBranch("jet1p4",&(tree_.jet1p4),32000,0, "vbfAnalysis");
-	l.BookExternalTreeBranch( "jet1",          &tree_.jet1, "vbfAnalysis" ); 
-	l.BookExternalTreeBranch( "jet2",          &tree_.jet2, "vbfAnalysis" ); 
-	l.BookExternalTreeBranch( "jet3",          &tree_.jet3, "vbfAnalysis" ); 
-	l.BookExternalTreeBranch( "jet1isMatched", &tree_.jet1isMatched, "vbfAnalysis" ); 
-	l.BookExternalTreeBranch( "jet2isMatched", &tree_.jet2isMatched, "vbfAnalysis" ); 
-	l.BookExternalTreeBranch( "jet1genPt",     &tree_.jet1genPt, "vbfAnalysis" );     
-	l.BookExternalTreeBranch( "jet2genPt",     &tree_.jet2genPt, "vbfAnalysis" );     
-	l.BookExternalTreeBranch( "jet1genDr",     &tree_.jet1genDr, "vbfAnalysis" );     
-	l.BookExternalTreeBranch( "jet2genDr",     &tree_.jet2genDr, "vbfAnalysis" );     
-	l.BookExternalTreeBranch( "jet1Pt",        &tree_.jet1Pt, "vbfAnalysis" );        
-	l.BookExternalTreeBranch( "jet2Pt",        &tree_.jet2Pt, "vbfAnalysis" );        
-	l.BookExternalTreeBranch( "jet1Eta",       &tree_.jet1Eta, "vbfAnalysis" );       
-	l.BookExternalTreeBranch( "jet2Eta",       &tree_.jet2Eta, "vbfAnalysis" );       
-	l.BookExternalTreeBranch( "zepp",          &tree_.zepp, "vbfAnalysis" );          
-	l.BookExternalTreeBranch( "mj1j2",         &tree_.mj1j2, "vbfAnalysis" );         
-	l.BookExternalTreeBranch( "dphi",          &tree_.dphi, "vbfAnalysis" );          
-	l.BookExternalTreeBranch( "dphiJJ",        &tree_.dphiJJ, "vbfAnalysis" );        
-	l.BookExternalTreeBranch( "dphiJJ2",       &tree_.dphiJJ2, "vbfAnalysis" );       
-	l.BookExternalTreeBranch( "deltaEta3",     &tree_.deltaEta3, "vbfAnalysis" );     
-	l.BookExternalTreeBranch( "jet1PileupID",  &tree_.jet1PileupID, "vbfAnalysis" );  
-	l.BookExternalTreeBranch( "jet2PileupID",  &tree_.jet2PileupID, "vbfAnalysis" );  
-	l.BookExternalTreeBranch( "isSignal",      &tree_.isSignal, "vbfAnalysis" );      
-	l.BookExternalTreeBranch( "mctype",        &tree_.mctype, "vbfAnalysis" );        
-	l.BookExternalTreeBranch( "diphomva",      &tree_.diphomva, "vbfAnalysis" );      
-	l.BookExternalTreeBranch( "pho1energy",       &tree_.pho1energy, "vbfAnalysis" );       
-	l.BookExternalTreeBranch( "pho2energy",       &tree_.pho2energy, "vbfAnalysis" );       
-	l.BookExternalTreeBranch( "pho1Eta",       &tree_.pho1Eta, "vbfAnalysis" );       
-	l.BookExternalTreeBranch( "pho2Eta",       &tree_.pho2Eta, "vbfAnalysis" );       
-	l.BookExternalTreeBranch( "pho1Phi",       &tree_.pho1Phi, "vbfAnalysis" );       
-	l.BookExternalTreeBranch( "pho2Phi",       &tree_.pho2Phi, "vbfAnalysis" );       
-	l.BookExternalTreeBranch( "pho1scEta",       &tree_.pho1scEta, "vbfAnalysis" );       
-	l.BookExternalTreeBranch( "pho2scEta",       &tree_.pho2scEta, "vbfAnalysis" );       
-	l.BookExternalTreeBranch( "pho1r9",        &tree_.pho1r9, "vbfAnalysis" );        
-	l.BookExternalTreeBranch( "pho2r9",        &tree_.pho2r9, "vbfAnalysis" );        
-	l.BookExternalTreeBranch( "pho1idMva",     &tree_.pho1idMva, "vbfAnalysis" );    
-	l.BookExternalTreeBranch( "pho2idMva",     &tree_.pho2idMva, "vbfAnalysis" );    
-	l.BookExternalTreeBranch( "pho1sE",   &tree_.pho1sE, "vbfAnalysis" );   
-	l.BookExternalTreeBranch( "pho2sE",   &tree_.pho2sE, "vbfAnalysis" );   
-	l.BookExternalTreeBranch( "pho1sEsmear",   &tree_.pho1sEsmear, "vbfAnalysis" );   
-	l.BookExternalTreeBranch( "pho2sEsmear",   &tree_.pho2sEsmear, "vbfAnalysis" );   
-	l.BookExternalTreeBranch( "diphosM",  &tree_.diphosM, "vbfAnalysis" );  
-	l.BookExternalTreeBranch( "diphosMwv",&tree_.diphosMwv, "vbfAnalysis" );
-	l.BookExternalTreeBranch( "diphovtxProb",  &tree_.diphovtxProb, "vbfAnalysis" );  
-	l.BookExternalTreeBranch( "pho1Matched",  &tree_.pho1Matched, "vbfAnalysis" );  
-	l.BookExternalTreeBranch( "pho2Matched",  &tree_.pho2Matched, "vbfAnalysis" );  
-	l.BookExternalTreeBranch( "corrVeretx",  &tree_.corrVeretx, "vbfAnalysis" );  
-	l.BookExternalTreeBranch( "pho1CiC",  &tree_.pho1CiC, "vbfAnalysis" );  
-	l.BookExternalTreeBranch( "pho2CiC",  &tree_.pho2CiC, "vbfAnalysis" );  
-	l.BookExternalTreeBranch( "diphoMVA",  &tree_.diphoMVA, "vbfAnalysis" );  
+	l.BookExternalTreeBranch( "entry",         &tree_.entry, "doubleHiggsAnalysis" );         
+	l.BookExternalTreeBranch( "weight",        &tree_.weight, "doubleHiggsAnalysis" );         
+	l.BookExternalTreeBranch( "sampleweight",  &tree_.sampleweight, "doubleHiggsAnalysis" );         
+	l.BookExternalTreeBranch( "pho1pt",        &tree_.pho1pt, "doubleHiggsAnalysis" );        
+	l.BookExternalTreeBranch( "pho2pt",        &tree_.pho2pt, "doubleHiggsAnalysis" );        
+	l.BookExternalTreeBranch( "diphopt",       &tree_.diphopt, "doubleHiggsAnalysis" );       
+	l.BookExternalTreeBranch( "diphoM",        &tree_.diphoM, "doubleHiggsAnalysis" );        
+	l.BookExternalTreeBranch( "diphoEta",      &tree_.diphoEta, "doubleHiggsAnalysis" );      
+	l.BookExternalTreeBranch( "dijetEta",      &tree_.dijetEta, "doubleHiggsAnalysis" );      
+	l.BookExternalTreeBranch("jet3p4",&(tree_.jet3p4),32000,0, "doubleHiggsAnalysis");
+	l.BookExternalTreeBranch("jet2p4",&(tree_.jet2p4),32000,0, "doubleHiggsAnalysis");
+	l.BookExternalTreeBranch("jet1p4",&(tree_.jet1p4),32000,0, "doubleHiggsAnalysis");
+	l.BookExternalTreeBranch( "jet1",          &tree_.jet1, "doubleHiggsAnalysis" ); 
+	l.BookExternalTreeBranch( "jet2",          &tree_.jet2, "doubleHiggsAnalysis" ); 
+	l.BookExternalTreeBranch( "jet3",          &tree_.jet3, "doubleHiggsAnalysis" ); 
+	l.BookExternalTreeBranch( "jet1isMatched", &tree_.jet1isMatched, "doubleHiggsAnalysis" ); 
+	l.BookExternalTreeBranch( "jet2isMatched", &tree_.jet2isMatched, "doubleHiggsAnalysis" ); 
+	l.BookExternalTreeBranch( "jet1genPt",     &tree_.jet1genPt, "doubleHiggsAnalysis" );     
+	l.BookExternalTreeBranch( "jet2genPt",     &tree_.jet2genPt, "doubleHiggsAnalysis" );     
+	l.BookExternalTreeBranch( "jet1genDr",     &tree_.jet1genDr, "doubleHiggsAnalysis" );     
+	l.BookExternalTreeBranch( "jet2genDr",     &tree_.jet2genDr, "doubleHiggsAnalysis" );     
+	l.BookExternalTreeBranch( "jet1Pt",        &tree_.jet1Pt, "doubleHiggsAnalysis" );        
+	l.BookExternalTreeBranch( "jet2Pt",        &tree_.jet2Pt, "doubleHiggsAnalysis" );        
+	l.BookExternalTreeBranch( "jet1Eta",       &tree_.jet1Eta, "doubleHiggsAnalysis" );       
+	l.BookExternalTreeBranch( "jet2Eta",       &tree_.jet2Eta, "doubleHiggsAnalysis" );       
+	l.BookExternalTreeBranch( "zepp",          &tree_.zepp, "doubleHiggsAnalysis" );          
+	l.BookExternalTreeBranch( "mj1j2",         &tree_.mj1j2, "doubleHiggsAnalysis" );         
+	l.BookExternalTreeBranch( "dphi",          &tree_.dphi, "doubleHiggsAnalysis" );          
+	l.BookExternalTreeBranch( "dphiJJ",        &tree_.dphiJJ, "doubleHiggsAnalysis" );        
+	l.BookExternalTreeBranch( "dphiJJ2",       &tree_.dphiJJ2, "doubleHiggsAnalysis" );       
+	l.BookExternalTreeBranch( "deltaEta3",     &tree_.deltaEta3, "doubleHiggsAnalysis" );     
+	l.BookExternalTreeBranch( "jet1PileupID",  &tree_.jet1PileupID, "doubleHiggsAnalysis" );  
+	l.BookExternalTreeBranch( "jet2PileupID",  &tree_.jet2PileupID, "doubleHiggsAnalysis" );  
+	l.BookExternalTreeBranch( "isSignal",      &tree_.isSignal, "doubleHiggsAnalysis" );      
+	l.BookExternalTreeBranch( "mctype",        &tree_.mctype, "doubleHiggsAnalysis" );        
+	l.BookExternalTreeBranch( "diphomva",      &tree_.diphomva, "doubleHiggsAnalysis" );      
+	l.BookExternalTreeBranch( "pho1energy",       &tree_.pho1energy, "doubleHiggsAnalysis" );       
+	l.BookExternalTreeBranch( "pho2energy",       &tree_.pho2energy, "doubleHiggsAnalysis" );       
+	l.BookExternalTreeBranch( "pho1Eta",       &tree_.pho1Eta, "doubleHiggsAnalysis" );       
+	l.BookExternalTreeBranch( "pho2Eta",       &tree_.pho2Eta, "doubleHiggsAnalysis" );       
+	l.BookExternalTreeBranch( "pho1Phi",       &tree_.pho1Phi, "doubleHiggsAnalysis" );       
+	l.BookExternalTreeBranch( "pho2Phi",       &tree_.pho2Phi, "doubleHiggsAnalysis" );       
+	l.BookExternalTreeBranch( "pho1scEta",       &tree_.pho1scEta, "doubleHiggsAnalysis" );       
+	l.BookExternalTreeBranch( "pho2scEta",       &tree_.pho2scEta, "doubleHiggsAnalysis" );       
+	l.BookExternalTreeBranch( "pho1r9",        &tree_.pho1r9, "doubleHiggsAnalysis" );        
+	l.BookExternalTreeBranch( "pho2r9",        &tree_.pho2r9, "doubleHiggsAnalysis" );        
+	l.BookExternalTreeBranch( "pho1idMva",     &tree_.pho1idMva, "doubleHiggsAnalysis" );    
+	l.BookExternalTreeBranch( "pho2idMva",     &tree_.pho2idMva, "doubleHiggsAnalysis" );    
+	l.BookExternalTreeBranch( "pho1sE",   &tree_.pho1sE, "doubleHiggsAnalysis" );   
+	l.BookExternalTreeBranch( "pho2sE",   &tree_.pho2sE, "doubleHiggsAnalysis" );   
+	l.BookExternalTreeBranch( "pho1sEsmear",   &tree_.pho1sEsmear, "doubleHiggsAnalysis" );   
+	l.BookExternalTreeBranch( "pho2sEsmear",   &tree_.pho2sEsmear, "doubleHiggsAnalysis" );   
+	l.BookExternalTreeBranch( "diphosM",  &tree_.diphosM, "doubleHiggsAnalysis" );  
+	l.BookExternalTreeBranch( "diphosMwv",&tree_.diphosMwv, "doubleHiggsAnalysis" );
+	l.BookExternalTreeBranch( "diphovtxProb",  &tree_.diphovtxProb, "doubleHiggsAnalysis" );  
+	l.BookExternalTreeBranch( "pho1Matched",  &tree_.pho1Matched, "doubleHiggsAnalysis" );  
+	l.BookExternalTreeBranch( "pho2Matched",  &tree_.pho2Matched, "doubleHiggsAnalysis" );  
+	l.BookExternalTreeBranch( "corrVeretx",  &tree_.corrVeretx, "doubleHiggsAnalysis" );  
+	l.BookExternalTreeBranch( "pho1CiC",  &tree_.pho1CiC, "doubleHiggsAnalysis" );  
+	l.BookExternalTreeBranch( "pho2CiC",  &tree_.pho2CiC, "doubleHiggsAnalysis" );  
+	l.BookExternalTreeBranch( "diphoMVA",  &tree_.diphoMVA, "doubleHiggsAnalysis" );  
    }
 }
 
 // ----------------------------------------------------------------------------------------------------
-void VbfAnalysis::ReducedOutputTree(LoopAll &l, TTree * outputTree) 
+void DoubleHiggsAnalysis::ReducedOutputTree(LoopAll &l, TTree * outputTree) 
 {
     /// dumpFlatTree=true;
     /// flatTree_ = new TTree("flatTree","flatTree");
 }
 
 // ----------------------------------------------------------------------------------------------------
-void VbfAnalysis::FillReductionVariables(LoopAll& l, int jentry)
+void DoubleHiggsAnalysis::FillReductionVariables(LoopAll& l, int jentry)
 {
 }
    
 // ----------------------------------------------------------------------------------------------------
-bool VbfAnalysis::SelectEventsReduction(LoopAll&, int)
+bool DoubleHiggsAnalysis::SelectEventsReduction(LoopAll&, int)
 {
     return true;
 }
@@ -221,7 +221,7 @@ bool VbfAnalysis::SelectEventsReduction(LoopAll&, int)
 //void switchJetIdVertex(LoopAll &l, int ivtx) ;
 
 // ----------------------------------------------------------------------------------------------------
-bool VbfAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentzVector & gP4, float & mass, float & evweight, 
+bool DoubleHiggsAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentzVector & gP4, float & mass, float & evweight, 
 				 int & category, int & diphoton_id,
 				 bool & isCorrectVertex,
 				 float &kinematic_bdtout,
