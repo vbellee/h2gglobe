@@ -1,5 +1,5 @@
-#ifndef __VbfAnalysis__
-#define __VbfAnalysis__
+#ifndef __DoubleHiggsAnalysis__
+#define __DoubleHiggsAnalysis__
 
 #include "BaseAnalysis.h"
 #include "BaseSmearer.h"
@@ -15,11 +15,11 @@
 #include <fstream>
 #include "math.h"
 
-class TreeVariables {
+class DoubleHiggsTreeVariables {
 
 public:
     
-    TreeVariables();
+    DoubleHiggsTreeVariables();
 
     int entry;
     int   nPU;
@@ -70,12 +70,12 @@ public:
 };
 
 // ------------------------------------------------------------------------------------
-class VbfAnalysis : public MassFactorizedMvaAnalysis 
+class DoubleHiggsAnalysis : public MassFactorizedMvaAnalysis 
 {
  public:
     
-    VbfAnalysis();
-    virtual ~VbfAnalysis();
+    DoubleHiggsAnalysis();
+    virtual ~DoubleHiggsAnalysis();
     
     virtual const std::string & name() const { return name_; };
     
@@ -103,7 +103,7 @@ private:
     TFile * outputFile_;
     TTree * flatTree_;
     int _nVertices;
-    TreeVariables tree_, default_;
+    DoubleHiggsTreeVariables tree_, default_;
 
 };
 

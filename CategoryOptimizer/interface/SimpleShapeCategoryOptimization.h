@@ -47,6 +47,10 @@ public:
 	void buildPdfs();
 	
 	std::string name() { return name_; };
+
+	void setShape(shape_t x);
+
+	void minEvents(double x) { minEvents_ = x; };
 	
 private:
 	void bookShape(int icat);
@@ -60,6 +64,7 @@ private:
 	std::vector<RooRealVar *> categoryNorms_;
 	RooArgSet owned_;
 	TF1 * likeg_;
+	double minEvents_;
 };
 
 // ------------------------------------------------------------------------------------------------
@@ -109,9 +114,12 @@ public:
 
 	AbsModel * getModel() { return &model_; };
 	void beginIntegration(double * boundaries) { 
-		lastIntegral_ = (*converterN_)(boundaries,0);
-		lastSumX_     = (*converterX_)(boundaries,0);
-		lastSumX2_    = (*converterX2_)(boundaries,0);
+		std::vector<double> extboundaries(ndim_+selectionCuts_.size());
+		std::copy(boundaries,boundaries+ndim_,extboundaries.begin());
+		std::copy(selectionCutsBegin_.begin(),selectionCutsBegin_.end(),extboundaries.begin()+ndim_);
+		lastIntegral_ = (*converterN_)(&extboundaries[0],0);
+		lastSumX_     = (*converterX_)(&extboundaries[0],0);
+		lastSumX2_    = (*converterX2_)(&extboundaries[0],0);
 		
 		model_.clear(); 
 	};
@@ -164,7 +172,7 @@ private:
 	int ndim_;
 	double norm_, lastIntegral_, lastSumX_, lastSumX2_;
 	std::vector<std::pair<double,double> > ranges_;
-	std::vector<double> selectionCuts_;
+	std::vector<double> selectionCuts_, selectionCutsBegin_;
 	
 	TH1 * pdf_;
 	THnSparse * hsparse_;
@@ -178,7 +186,7 @@ class SimpleShapeFomProvider : public AbsFomProvider
 public:
 	SimpleShapeFomProvider(int nSubcats=1,RooRealVar *poi=0, int ncpu=4, const char * minimizer="Minuit2", 
 			       int minStrategy=2) : 
-		ncpu_(ncpu), nSubcats_(nSubcats), minimizer_(minimizer),minStrategy_(minStrategy), useRooSimultaneous_(false)
+		nSubcats_(nSubcats), ncpu_(ncpu), minimizer_(minimizer),minStrategy_(minStrategy), useRooSimultaneous_(false)
 		{ 
 			if( poi ) { addPOI(poi); }
 			assert(minStrategy_<3); 
@@ -193,11 +201,20 @@ public:
 	void useRooSimultaneous(bool x=true) { useRooSimultaneous_=x; };
 	void nSubcats(int x) { nSubcats_ = x; };
 	
+	void addNuisance(RooRealVar * x, RooAbsReal *p=0) { 
+		resets_.push_back(x); 
+		if(p!=0) { 
+			constrained_.add(*x);
+			constraints_.add(*p,false); 
+		} 
+	};
+
 private:
-	int ncpu_;
 	int nSubcats_;
+	int ncpu_;
 	std::vector<RooRealVar *> pois_;
 	std::vector<RooRealVar *> resets_;
+	RooArgSet constraints_, constrained_;
 	std::string minimizer_;
 	int minStrategy_;
 	bool useRooSimultaneous_;
