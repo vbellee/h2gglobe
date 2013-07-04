@@ -43,6 +43,7 @@ public:
     bool  jet1PileupID,jet2PileupID ;
     bool  isSignal;
     int   mctype;
+    float csvBtag1, csvBtag2, csvBtag3, csvMvaBtag1, csvMvaBtag2, csvMvaBtag3, jetProbBtag1, jetProbBtag2, jetProbBtag3, tcheBtag1, tcheBtag2, tcheBtag3;
     
     float pho1energy;
     float pho2energy;
@@ -66,6 +67,7 @@ public:
     bool pho1Matched, pho2Matched, corrVeretx;
     int pho1CiC, pho2CiC;
     float diphoMVA;
+    
     
 };
 
