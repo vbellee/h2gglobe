@@ -378,27 +378,6 @@ bool DoubleHiggsAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, T
 	if(ijet2>=0) { *(tree_.jet2p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet2); }
 	if(ijet3>=0) { *(tree_.jet3p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet3); }
 
-	if( ijet1 >= 0 ) {
-	    tree_.csvBtag1 = l.jet_algoPF1_csvBtag[ijet1];
-	    tree_.csvMvaBtag1 = l.jet_algoPF1_csvMvaBtag[ijet1];
-	    tree_.jetProbBtag1 = l.jet_algoPF1_jetProbBtag[ijet1];
-	    tree_.tcheBtag1 = l.jet_algoPF1_tcheBtag[ijet1];
-	}
-
-	if( ijet2 >= 0 ) {
-	    tree_.csvBtag2 = l.jet_algoPF1_csvBtag[ijet2];
-	    tree_.csvMvaBtag2 = l.jet_algoPF1_csvMvaBtag[ijet2];
-	    tree_.jetProbBtag2 = l.jet_algoPF1_jetProbBtag[ijet2];
-	    tree_.tcheBtag2 = l.jet_algoPF1_tcheBtag[ijet2];
-	}
-	
-	if( ijet3 >= 0 ) {
-	    tree_.csvBtag3 = l.jet_algoPF1_csvBtag[ijet3];
-	    tree_.csvMvaBtag3 = l.jet_algoPF1_csvMvaBtag[ijet3];
-	    tree_.jetProbBtag3 = l.jet_algoPF1_jetProbBtag[ijet3];
-	    tree_.tcheBtag3 = l.jet_algoPF1_tcheBtag[ijet3];
-	}
-
 
 	TLorentzVector sumj1;
 	TLorentzVector sumj2;
@@ -453,6 +432,12 @@ bool DoubleHiggsAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, T
 		tree_.jet1PileupID  = PileupJetIdentifier::passJetId(l.jet_algoPF1_simple_wp_level[ijet1], PileupJetIdentifier::kLoose);
 		tree_.jet1Pt        = jet1.Pt();
 		tree_.jet1Eta       = jet1.Eta();
+
+		//Entries added 08/07/2013
+		tree_.csvBtag1 = l.jet_algoPF1_csvBtag[ijet1];
+		tree_.csvMvaBtag1 = l.jet_algoPF1_csvMvaBtag[ijet1];
+		tree_.jetProbBtag1 = l.jet_algoPF1_jetProbBtag[ijet1];
+		tree_.tcheBtag1 = l.jet_algoPF1_tcheBtag[ijet1];
 	    }
 	    if( ijet2 >= 0 ) {
 		tree_.jet2isMatched = l.jet_algoPF1_genMatched[ijet2];
@@ -461,6 +446,14 @@ bool DoubleHiggsAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, T
 		tree_.jet2PileupID  = PileupJetIdentifier::passJetId(l.jet_algoPF1_simple_wp_level[ijet2], PileupJetIdentifier::kLoose);
 		tree_.jet2Pt        = jet2.Pt();
 		tree_.jet2Eta       = jet2.Eta();
+
+		//Entries added 08/07/2013
+		tree_.csvBtag2 = l.jet_algoPF1_csvBtag[ijet2];
+		tree_.csvMvaBtag2 = l.jet_algoPF1_csvMvaBtag[ijet2];
+		tree_.jetProbBtag2 = l.jet_algoPF1_jetProbBtag[ijet2];
+		tree_.tcheBtag2 = l.jet_algoPF1_tcheBtag[ijet2];
+
+
 	    }
 	    
 	    if( ijet1 >= 0 && ijet2 >= 0 ) {
@@ -471,6 +464,17 @@ bool DoubleHiggsAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, T
 		tree_.dphiJJ        = fabs(jet1.DeltaPhi(jet2));
 		tree_.dphiJJ2       = fabs(sumj1.DeltaPhi(sumj2));
 	    }
+
+
+	    //Entries added 08/07/2013
+	    if( ijet3 >= 0 ) {
+		tree_.csvBtag3 = l.jet_algoPF1_csvBtag[ijet3];
+		tree_.csvMvaBtag3 = l.jet_algoPF1_csvMvaBtag[ijet3];
+		tree_.jetProbBtag3 = l.jet_algoPF1_jetProbBtag[ijet3];
+		tree_.tcheBtag3 = l.jet_algoPF1_tcheBtag[ijet3];
+	    }
+
+
 	    
 	    tree_.pho1energy      = lead_p4.E();
 	    tree_.pho2energy      = sublead_p4.E();
