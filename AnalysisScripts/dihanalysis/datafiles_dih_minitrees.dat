@@ -1,20 +1,19 @@
 ## intL=19620. histfile=/store/cmst3/user/musella/hgg/vbf_optimization/%(label)s/dihanalysis.root output=eventsList.txt
-intL=19620. histfile=diH_studies.root output=eventsList.txt
+intL=19620. histfile=diH_studiesBtagging.root output=eventsList.txt
 #intL=5346. histfile=/store/cmst3/user/malberti/HIGGS/VBF/%(label)s/dihanalysis.root output=eventsList.txt
 #intL=5346. histfile=/tmp/malberti/dihanalysis.root output=eventsList.txt
 #intL=5346. histfile=dihanalysis.root output=eventsList.txt
 
-#setmacro reduced:/store/group/phys_higgs/cmshgg/reduced
-#setmacro moriond_mc:%(reduced)s/moriond2013_reduction_v1/mc/Summer12_S10_8TeV
-#setmacro moriond_data:%(reduced)s/moriond2013_reduction_v2/data
-#setmacro vbfopt:%(reduced)s/reduction_vbf_optimization_v1/mc/Summer12_RD_DR53X-PU_S10_START53_V7C
+
+#setmacro mc:/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v05/mc/Summer12_S10_8TeV
+
 
 ##
 ## Signal 125
 ## 
-typ=-37 ind=1 draw=1   Nam=ggh_m125_8TeV   		CaDir=%(moriond_mc)s/GluGluToHToGG_M-125_8TeV-powheg-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1
-typ=-38 ind=2 draw=1   Nam=vbf_m125_8TeV   		CaDir=%(moriond_mc)s/VBF_HToGG_M-125_8TeV-powheg-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1
-typ=-40 ind=4 draw=1   Nam=wzh_m125_8TeV   		CaDir=%(moriond_mc)s/WH_ZH_HToGG_M-125_8TeV-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1
+typ=-37 ind=1 draw=1   Nam=ggh_m125_8TeV   		CaDir=%(mc)s/GluGluToHToGG_M-125_8TeV-powheg-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1
+typ=-38 ind=2 draw=1   Nam=vbf_m125_8TeV   		CaDir=%(mc)s/VBF_HToGG_M-125_8TeV-powheg-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1
+typ=-40 ind=4 draw=1   Nam=wzh_m125_8TeV   		CaDir=%(mc)s/WH_ZH_HToGG_M-125_8TeV-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1
 
 ##
 ## Branches to use
