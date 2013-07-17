@@ -828,10 +828,12 @@ void Normalization_8TeV::Init7TeV(){
     //Graviton X-Sections - assume the same as SM
     for (std::map<double, double>::const_iterator iter = XSectionMap_ggh.begin(); iter != XSectionMap_ggh.end(); ++iter)
       XSectionMap_sm[iter->first]=iter->second+XSectionMap_vbf[iter->first]+XSectionMap_wzh[iter->first]+XSectionMap_tth[iter->first];
-   
 }
 
 void Normalization_8TeV::Init8TeV(){
+        
+	//// XSection_hh = 33.86e-3; // 14TeV
+	XSection_hh = 0.00067521 / 0.002616 * 33.86e-3; // Scale Madgraph 
 
   BranchingRatioMap[90.0]=0.00122;
   BranchingRatioMap[95.0]=0.00139;
@@ -2382,6 +2384,8 @@ void Normalization_8TeV::FillSignalTypes(){
   SignalTypeMap[-37]=std::make_pair<TString,double>("ggh",125);
   SignalTypeMap[-38]=std::make_pair<TString,double>("vbf",125);
   SignalTypeMap[-40]=std::make_pair<TString,double>("wzh",125);
+  SignalTypeMap[-2340]=std::make_pair<TString,double>("wzh",125);
+  SignalTypeMap[-2440]=std::make_pair<TString,double>("wzh",125);
   SignalTypeMap[-39]=std::make_pair<TString,double>("tth",125);
   SignalTypeMap[-25]=std::make_pair<TString,double>("ggh",120);
   SignalTypeMap[-26]=std::make_pair<TString,double>("vbf",120);
@@ -2419,31 +2423,33 @@ void Normalization_8TeV::FillSignalTypes(){
   SignalTypeMap[-177]=std::make_pair<TString,double>("gg_grav",126);
   SignalTypeMap[-178]=std::make_pair<TString,double>("qq_grav",126);
 
+  SignalTypeMap[-200]=std::make_pair<TString,double>("hh",125);
+  
 }
 
 TGraph * Normalization_8TeV::GetSigmaGraph(TString process)
 {
   TGraph * gr = new TGraph();
-	std::map<double, double> * XSectionMap = 0 ;
-	if ( process == "ggh") {
-		XSectionMap = &XSectionMap_ggh;
-	} else if ( process == "vbf") {
-		XSectionMap = &XSectionMap_vbf;
-    } else if ( process == "vbfold") {
-      XSectionMap = &XSectionMap_vbfold;
-	} else if ( process == "wzh") {
-		XSectionMap = &XSectionMap_wzh;
-	} else if ( process == "tth") {
-		XSectionMap = &XSectionMap_tth;
-	} else if ( process == "wh") {
-		XSectionMap = &XSectionMap_wh;
-	} else if ( process == "zh") {
-		XSectionMap = &XSectionMap_zh;
-	} else if (process.Contains("grav")){
-    XSectionMap = &XSectionMap_sm;
+  std::map<double, double> * XSectionMap = 0 ;
+  if ( process == "ggh") {
+	  XSectionMap = &XSectionMap_ggh;
+  } else if ( process == "vbf") {
+	  XSectionMap = &XSectionMap_vbf;
+	} else if ( process == "vbfold") {
+	  XSectionMap = &XSectionMap_vbfold;
+  } else if ( process == "wzh") {
+	  XSectionMap = &XSectionMap_wzh;
+  } else if ( process == "tth") {
+	  XSectionMap = &XSectionMap_tth;
+  } else if ( process == "wh") {
+	  XSectionMap = &XSectionMap_wh;
+  } else if ( process == "zh") {
+	  XSectionMap = &XSectionMap_zh;
+  } else if (process.Contains("grav")){
+	  XSectionMap = &XSectionMap_sm;
   } else {
-    std::cout << "Warning ggh, vbf, wh, zh, wzh, tth or grav not found in histname!!!!" << std::endl;
-    //exit(1);
+	  std::cout << "Warning ggh, vbf, wh, zh, wzh, tth or grav not found in histname!!!!" << std::endl;
+	  //exit(1);
   }
   
   for (std::map<double, double>::const_iterator iter = XSectionMap->begin();  iter != XSectionMap->end(); ++iter) {
@@ -2507,6 +2513,8 @@ double Normalization_8TeV::GetXsection(double mass, TString HistName) {
     XSectionMap = &XSectionMap_tth;
   } else if (HistName.Contains("grav")) {
     XSectionMap = &XSectionMap_sm;
+  } else if (HistName.Contains("hh")) {
+    return XSection_hh;
   } else {
     std::cout << "Warning ggh, vbf, wh, zh, wzh, tth or grav not found in histname!!!!" << std::endl;
     //exit(1);

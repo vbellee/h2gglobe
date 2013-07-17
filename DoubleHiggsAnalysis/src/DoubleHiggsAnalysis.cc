@@ -99,6 +99,8 @@ DoubleHiggsAnalysis::DoubleHiggsAnalysis()
     
     flatTree_ = 0;
     outputFile_ = 0;
+    
+    bookDoubleHiggs = true;
 }
 
 // ----------------------------------------------------------------------------------------------------

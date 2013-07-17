@@ -45,6 +45,8 @@ StatAnalysis::StatAnalysis()  :
     splitwzh=false;
     sigmaMrv=0.;
     sigmaMwv=0.;
+
+    bookDoubleHiggs = false;
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -521,6 +523,10 @@ void StatAnalysis::Init(LoopAll& l)
             l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_gg_grav_mass_m%d",sig),-1);
             l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_qq_grav_mass_m%d",sig),-1);
         }
+    }
+    if( bookDoubleHiggs ) {
+	l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_hh_mass_m%d",125),nDataBins);
+	l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_hh_mass_m%d",125),-1);
     }
 
     // Make sure the Map is filled
@@ -1811,68 +1817,6 @@ void StatAnalysis::FillSignalLabelMap(LoopAll & l)
 	 it!=signalMap.end(); ++it ) {
 	signalLabels[it->first] = it->second.first+Form("_mass_m%1.0f", it->second.second);
     }
-
-    /////////// // Basically A Map of the ID (type) to the signal's name which can be filled Now:
-    /////////// signalLabels[-57]="ggh_mass_m123";
-    /////////// signalLabels[-58]="vbf_mass_m123";
-    /////////// signalLabels[-60]="wzh_mass_m123";
-    /////////// signalLabels[-59]="tth_mass_m123";
-    /////////// signalLabels[-53]="ggh_mass_m121";
-    /////////// signalLabels[-54]="vbf_mass_m121";
-    /////////// signalLabels[-56]="wzh_mass_m121";
-    /////////// signalLabels[-55]="tth_mass_m121";
-    /////////// signalLabels[-65]="ggh_mass_m160";
-    /////////// signalLabels[-66]="vbf_mass_m160";
-    /////////// signalLabels[-68]="wzh_mass_m160";
-    /////////// signalLabels[-67]="tth_mass_m160";
-    /////////// signalLabels[-61]="ggh_mass_m155";
-    /////////// signalLabels[-62]="vbf_mass_m155";
-    /////////// signalLabels[-64]="wzh_mass_m155";
-    /////////// signalLabels[-63]="tth_mass_m155";
-    /////////// signalLabels[-49]="ggh_mass_m150";
-    /////////// signalLabels[-50]="vbf_mass_m150";
-    /////////// signalLabels[-52]="wzh_mass_m150";
-    /////////// signalLabels[-51]="tth_mass_m150";
-    /////////// signalLabels[-45]="ggh_mass_m145";
-    /////////// signalLabels[-46]="vbf_mass_m145";
-    /////////// signalLabels[-48]="wzh_mass_m145";
-    /////////// signalLabels[-47]="tth_mass_m145";
-    /////////// signalLabels[-33]="ggh_mass_m140";
-    /////////// signalLabels[-34]="vbf_mass_m140";
-    /////////// signalLabels[-36]="wzh_mass_m140";
-    /////////// signalLabels[-35]="tth_mass_m140";
-    /////////// signalLabels[-41]="ggh_mass_m135";
-    /////////// signalLabels[-42]="vbf_mass_m135";
-    /////////// signalLabels[-44]="wzh_mass_m135";
-    /////////// signalLabels[-43]="tth_mass_m135";
-    /////////// signalLabels[-29]="ggh_mass_m130";
-    /////////// signalLabels[-30]="vbf_mass_m130";
-    /////////// signalLabels[-32]="wzh_mass_m130";
-    /////////// signalLabels[-31]="tth_mass_m130";
-    /////////// signalLabels[-37]="ggh_mass_m125";
-    /////////// signalLabels[-38]="vbf_mass_m125";
-    /////////// signalLabels[-40]="wzh_mass_m125";
-    /////////// signalLabels[-39]="tth_mass_m125";
-    /////////// signalLabels[-25]="ggh_mass_m120";
-    /////////// signalLabels[-26]="vbf_mass_m120";
-    /////////// signalLabels[-28]="wzh_mass_m120";
-    /////////// signalLabels[-27]="tth_mass_m120";
-    /////////// signalLabels[-21]="ggh_mass_m115";
-    /////////// signalLabels[-22]="vbf_mass_m115";
-    /////////// signalLabels[-24]="wzh_mass_m115";
-    /////////// signalLabels[-23]="tth_mass_m115";
-    /////////// signalLabels[-17]="ggh_mass_m110";
-    /////////// signalLabels[-18]="vbf_mass_m110";
-    /////////// signalLabels[-19]="wzh_mass_m110";
-    /////////// signalLabels[-20]="tth_mass_m110";
-    /////////// signalLabels[-13]="ggh_mass_m105";
-    /////////// signalLabels[-14]="vbf_mass_m105";
-    /////////// signalLabels[-16]="wzh_mass_m105";
-    /////////// signalLabels[-15]="tth_mass_m105";
-    /////////// signalLabels[-69]="ggh_mass_m100";
-    /////////// signalLabels[-70]="vbf_mass_m100";
-    /////////// signalLabels[-72]="wzh_mass_m100";
-    /////////// signalLabels[-71]="tth_mass_m100";
 }
 
 std::string StatAnalysis::GetSignalLabel(int id, LoopAll &l){

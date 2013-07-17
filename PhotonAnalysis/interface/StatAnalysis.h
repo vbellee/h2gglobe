@@ -83,6 +83,7 @@ class StatAnalysis : public PhotonAnalysis
     float phoidMvaCut;
     std::vector<double> zeePtBinLowEdge, zeePtWeight;
     std::vector<int> sigPointsToBook;
+    bool bookDoubleHiggs;
     
     std::string kfacHist;
     std::string pdfWeightHist;
