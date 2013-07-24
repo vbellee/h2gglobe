@@ -865,3 +865,6 @@ Float_t jet_algoPF3_nSecondaryVertices[MAX_JETS];
 Float_t jet_algoPF3_secVtxPt[MAX_JETS];
 Float_t jet_algoPF3_secVtx3dL[MAX_JETS];
 Float_t jet_algoPF3_secVtx3deL[MAX_JETS];
+Bool_t jet_algoPF1_bgenMatched[MAX_JETS];
+Bool_t jet_algoPF2_bgenMatched[MAX_JETS];
+Bool_t jet_algoPF3_bgenMatched[MAX_JETS];

@@ -841,3 +841,6 @@ TBranch* b_jet_algoPF3_nSecondaryVertices;
 TBranch* b_jet_algoPF3_secVtxPt;
 TBranch* b_jet_algoPF3_secVtx3dL;
 TBranch* b_jet_algoPF3_secVtx3deL;
+TBranch* b_jet_algoPF1_bgenMatched;
+TBranch* b_jet_algoPF2_bgenMatched;
+TBranch* b_jet_algoPF3_bgenMatched;
