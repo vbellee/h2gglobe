@@ -363,7 +363,7 @@ bool DoubleHiggsAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, T
 	    }
 	}
 	std::sort(sorted_jets.begin(),sorted_jets.end(),
-		  ClonesSorter<TLorentzVector,double,std::greater<double> >(l.jet_algoPF1_p4,&TLorentzVector::Pt));
+		  SimpleSorter<float,std::greater<float> >(l.jet_algoPF1_csvBtag) );
 
 	switchJetIdVertex( l, l.dipho_vtxind[diphoton_id] );
 
