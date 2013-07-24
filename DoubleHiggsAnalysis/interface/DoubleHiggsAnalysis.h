@@ -37,6 +37,7 @@ public:
     
     TLorentzVector * jet1p4, * jet2p4, * jet3p4;
     float jet1isMatched,jet2isMatched;
+    bool  jet1isBMatched,jet2isBMatched;
     float jet1genPt,jet2genPt;
     float jet1genDr,jet2genDr;
     float jet1Pt, jet2Pt, jet1Eta, jet2Eta, zepp, mj1j2, dphi, dphiJJ, dphiJJ2, deltaEta3;

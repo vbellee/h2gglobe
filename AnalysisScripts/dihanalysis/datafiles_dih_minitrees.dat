@@ -1,16 +1,11 @@
-## intL=19620. histfile=/store/cmst3/user/musella/hgg/vbf_optimization/%(label)s/dihanalysis.root output=eventsList.txt
 intL=19620. histfile=diH_studiesBtagging.root output=eventsList.txt
-#intL=5346. histfile=/store/cmst3/user/malberti/HIGGS/VBF/%(label)s/dihanalysis.root output=eventsList.txt
-#intL=5346. histfile=/tmp/malberti/dihanalysis.root output=eventsList.txt
-#intL=5346. histfile=dihanalysis.root output=eventsList.txt
-
-
-#setmacro mc:/store/cmst3/user/musella/reduced/dih_studies_reduction_v1/mc/Summer12_S10_8TeV
 
 
 ##
 ## Signal 125
 ## 
+
+#setmacro mc:/store/cmst3/user/musella/reduced/dih_studies_reduction_v2/mc/Summer12_S10_8TeV
 typ=-37 ind=1 draw=1   Nam=ggh_m125_8TeV   		CaDir=%(mc)s/GluGluToHToGG_M-125_8TeV-powheg-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1
 typ=-38 ind=2 draw=1   Nam=vbf_m125_8TeV   		CaDir=%(mc)s/VBF_HToGG_M-125_8TeV-powheg-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1
 typ=-2340 ind=4 draw=1   Nam=wzh_m125_8TeV   		CaDir=%(mc)s/WH_ZH_HToGG_M-125_8TeV-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1_ZH

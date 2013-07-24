@@ -29,6 +29,8 @@ DoubleHiggsTreeVariables::DoubleHiggsTreeVariables() :
     jet3p4(new TLorentzVector(0,0,0,0)),
     jet1isMatched(false),	
     jet2isMatched(false),	
+    jet1isBMatched(false),	
+    jet2isBMatched(false),	
     jet1genPt(0),	
     jet2genPt(0),	
     jet1genDr(0),	
@@ -170,6 +172,8 @@ void DoubleHiggsAnalysis::Init(LoopAll& l)
 	l.BookExternalTreeBranch( "jet3",          &tree_.jet3, "doubleHiggsAnalysis" ); 
 	l.BookExternalTreeBranch( "jet1isMatched", &tree_.jet1isMatched, "doubleHiggsAnalysis" ); 
 	l.BookExternalTreeBranch( "jet2isMatched", &tree_.jet2isMatched, "doubleHiggsAnalysis" ); 
+	l.BookExternalTreeBranch( "jet1isBMatched", &tree_.jet1isBMatched, "doubleHiggsAnalysis" ); 
+	l.BookExternalTreeBranch( "jet2isBMatched", &tree_.jet2isBMatched, "doubleHiggsAnalysis" ); 
 	l.BookExternalTreeBranch( "jet1genPt",     &tree_.jet1genPt, "doubleHiggsAnalysis" );     
 	l.BookExternalTreeBranch( "jet2genPt",     &tree_.jet2genPt, "doubleHiggsAnalysis" );     
 	l.BookExternalTreeBranch( "jet1genDr",     &tree_.jet1genDr, "doubleHiggsAnalysis" );     
@@ -429,6 +433,7 @@ bool DoubleHiggsAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, T
 	    
 	    if( ijet1 >= 0 ) {
 		tree_.jet1isMatched = l.jet_algoPF1_genMatched[ijet1];
+		tree_.jet1isBMatched = l.jet_algoPF1_bgenMatched[ijet1];
 		tree_.jet1genPt     = l.jet_algoPF1_genPt[ijet1];
 		tree_.jet1genDr     = l.jet_algoPF1_genDr[ijet1];
 		tree_.jet1PileupID  = PileupJetIdentifier::passJetId(l.jet_algoPF1_simple_wp_level[ijet1], PileupJetIdentifier::kLoose);
@@ -443,6 +448,7 @@ bool DoubleHiggsAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, T
 	    }
 	    if( ijet2 >= 0 ) {
 		tree_.jet2isMatched = l.jet_algoPF1_genMatched[ijet2];
+		tree_.jet2isBMatched = l.jet_algoPF1_bgenMatched[ijet2];
 		tree_.jet2genPt     = l.jet_algoPF1_genPt[ijet2];
 		tree_.jet2genDr     = l.jet_algoPF1_genDr[ijet2];
 		tree_.jet2PileupID  = PileupJetIdentifier::passJetId(l.jet_algoPF1_simple_wp_level[ijet2], PileupJetIdentifier::kLoose);
