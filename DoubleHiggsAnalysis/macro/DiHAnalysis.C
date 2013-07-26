@@ -10,7 +10,7 @@
 void DiHAnalysis(){
   
   //Open a file, save the ntuple and close the file
-  TFile *in_file = TFile::Open("histograms_diH_studiesBtagging2.root");
+  TFile *in_file = TFile::Open("histograms_diH_studiesBtagging.root");
   
  
   TTree* my_tuple = (TTree*) in_file->GetObjectChecked("doubleHiggsAnalysis/gghh_m125_8TeV",
@@ -37,10 +37,10 @@ void DiHAnalysis(){
 
   //Smallest Cut
   float csvCut1 ;
-  csvCut1 = 0.0;
+  csvCut1 = 0.679;
   //Biggest Cut
   float csvCut2 ;
-  csvCut2 = 0.244;
+  csvCut2 = 0.679;
 
 
   //Create the Histograms
@@ -249,49 +249,55 @@ void DiHAnalysis(){
   hdiphoM->SetFillColor(kBlue-6);
 
   TH1F* hbkg=new TH1F("Bkg","Di-jet Mass Bkg;Mass;",
-			 50,//Number of bins
+			 60,//Number of bins
 			 0,//Lower X Boundary
 			 300);//Upper X Boundary
   hbkg->SetFillColor(kYellow);
 
   TH1F* hmj1j2=new TH1F("mj1mj2GGHH","Di-jet MassGGHH;Mass;",
-			 50,//Number of bins
+			 60,//Number of bins
 			 0,//Lower X Boundary
 			 300);//Upper X Boundary
   hmj1j2->SetLineColor(kGreen-6);
 
   TH1F* hmj1j2reco=new TH1F("mj1mj2GGHH","Di-jet Reconstructed MassGGHH;Mass;",
-			 50,//Number of bins
+			 60,//Number of bins
 			 0,//Lower X Boundary
 			 300);//Upper X Boundary
   hmj1j2reco->SetLineColor(kRed-6);
 
   TH1F* hmj1j2ZH=new TH1F("mj1mj2ZH","Di-jetZH Mass;Mass;",
-			 50,//Number of bins
+			 60,//Number of bins
 			 0,//Lower X Boundary
 			 300);//Upper X Boundary
   hmj1j2ZH->SetFillColor(kGreen);
 
+  TH1F* hmj1j2ZHBMatched=new TH1F("mj1mj2ZHBMatched","Di-jetZH BMatched Mass;Mass;",
+			 60,//Number of bins
+			 0,//Lower X Boundary
+			 300);//Upper X Boundary
+  hmj1j2ZHBMatched->SetFillColor(kGreen+3);
+
   TH1F* hmj1j2WH=new TH1F("mj1mj2WH","Di-jetWH Mass;Mass;",
-			 50,//Number of bins
+			 60,//Number of bins
 			 0,//Lower X Boundary
 			 300);//Upper X Boundary
   hmj1j2WH->SetFillColor(kRed);
 
   TH1F* hmj1j2GGH=new TH1F("mj1mj2GGH","Di-jet MassGGH;Mass;",
-			 50,//Number of bins
+			 60,//Number of bins
 			 0,//Lower X Boundary
 			 300);//Upper X Boundary
   hmj1j2GGH->SetFillColor(kBlue-6);
 
   TH1F* hmj1j2GGHCuts=new TH1F("mj1mj2GGHCuts","Di-jet MassGGH;Mass;",
-			 50,//Number of bins
+			 60,//Number of bins
 			 0,//Lower X Boundary
 			 300);//Upper X Boundary
   hmj1j2GGHCuts->SetFillColor(kBlue-6);
 
   TH1F* hmj1j2VBF=new TH1F("mj1mj2VBF","Di-jet MassVBF;Mass;",
-			 50,//Number of bins
+			 60,//Number of bins
 			 0,//Lower X Boundary
 			 300);//Upper X Boundary
   hmj1j2VBF->SetFillColor(kBlue);
@@ -374,6 +380,17 @@ void DiHAnalysis(){
 			 50);//Upper X Boundary
   htcheBtag3->SetFillColor(kCyan-6);
 
+  TH1F* hjet1isBMatched=new TH1F("jet1isBMatched","Matched Jet1;Match;",
+			 3,//Number of bins
+			 0,//Lower X Boundary
+			 1.2);//Upper X Boundary
+  hjet1isBMatched->SetFillColor(kOrange-6);
+
+  TH1F* hjet2isBMatched=new TH1F("jet2isBMatched","Matched Jet2;Match;",
+			 3,//Number of bins
+			 0,//Lower X Boundary
+			 1.2);//Upper X Boundary
+  hjet2isBMatched->SetFillColor(kOrange-6);
   /*
   TH1F* hjet1isMatched=new TH1F("jet1isMatched","Matched Jet1;Match;",
 			 3,//Number of bins
@@ -388,6 +405,38 @@ void DiHAnalysis(){
   hjet2isMatched->SetFillColor(kOrange-6);
   */
 
+  TH1F* hDeltaRHH=new TH1F("DeltaRHH","Delta R;Delta R;",
+			 100,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hDeltaRHH->SetLineColor(kGreen-6);
+
+  TH1F* hDeltaRZH=new TH1F("DeltaRZH","DeltaR;DeltaR;",
+			 100,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hDeltaRZH->SetLineColor(kGreen);
+
+  TH1F* hDeltaRWH=new TH1F("DeltaRWH","DeltaR;DeltaR;",
+			 100,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hDeltaRWH->SetLineColor(kRed);
+
+  TH1F* hDeltaRGGH=new TH1F("DeltaRGGH","DeltaR;DeltaR;",
+			 100,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hDeltaRGGH->SetLineColor(kBlue-6);
+
+  TH1F* hDeltaRVBF=new TH1F("DeltaRVBF","DeltaR;DeltaR;",
+			 100,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hDeltaRVBF->SetLineColor(kBlue);
+
+
+
   //Create the fit functions to be modified with the Breit Wigner function
   //gdiphoM = new TF1("gdiphoM","2*sqrt(2)*[0]*[1]*sqrt([0]*[0]*([0]*[0]+[1]*[1]))/(3.1415*sqrt([0]*[0]+sqrt([0]*[0]*([0]*[0]+[1]*[1]))))/((x*x-[0]*[0])*(x*x-[0]*[0])+[0]*[0]*[1]*[1])",90,160);
   //gdiphoM->SetParameters(125,11.7);
@@ -399,9 +448,9 @@ void DiHAnalysis(){
  
   TLorentzVector * jet1p4,* jet2p4,* jet3p4;
 
-  float pho1pt, pho2pt, pho1Eta, pho2Eta, diphoM, diphoEta, diphopt,jet1Eta,jet2Eta, dijetEta, jet1Pt, jet2Pt,jet1genPt, jet2genPt, mj1j2, numJet1Matched, numJet2Matched, numDijetMatched, csvBtag1, csvBtag2, csvBtag3, csvMvaBtag1, csvMvaBtag2, csvMvaBtag3, jetProbBtag1, jetProbBtag2, jetProbBtag3, tcheBtag1, tcheBtag2, tcheBtag3, weight;
+  float pho1pt, pho2pt, pho1Eta, pho2Eta, pho1Phi, pho2Phi, diphoM, diphoEta, diphopt,jet1Eta,jet2Eta, dijetEta, jet1Pt, jet2Pt,jet1genPt, jet2genPt, mj1j2, numJet1Matched, numJet2Matched, numDijetMatched, csvBtag1, csvBtag2, csvBtag3, csvMvaBtag1, csvMvaBtag2, csvMvaBtag3, jetProbBtag1, jetProbBtag2, jetProbBtag3, tcheBtag1, tcheBtag2, tcheBtag3, weight;
 
-  bool jet1isMatched, jet2isMatched;
+  bool jet1isMatched, jet2isMatched, jet1isBMatched, jet2isBMatched;
 
   int jet3;
 
@@ -415,6 +464,8 @@ void DiHAnalysis(){
   my_tuple->SetBranchAddress("pho2pt",&pho2pt);
   my_tuple->SetBranchAddress("pho1Eta",&pho1Eta);
   my_tuple->SetBranchAddress("pho2Eta",&pho2Eta);
+  my_tuple->SetBranchAddress("pho1Phi",&pho1Phi);
+  my_tuple->SetBranchAddress("pho2Phi",&pho2Phi);
   my_tuple->SetBranchAddress("diphoM",&diphoM);
   my_tuple->SetBranchAddress("diphoEta",&diphoEta);
   my_tuple->SetBranchAddress("diphopt",&diphopt);
@@ -450,6 +501,8 @@ void DiHAnalysis(){
   my_tupleZH->SetBranchAddress("pho2pt",&pho2pt);
   my_tupleZH->SetBranchAddress("pho1Eta",&pho1Eta);
   my_tupleZH->SetBranchAddress("pho2Eta",&pho2Eta);
+  my_tupleZH->SetBranchAddress("pho1Phi",&pho1Phi);
+  my_tupleZH->SetBranchAddress("pho2Phi",&pho2Phi);
   my_tupleZH->SetBranchAddress("diphoM",&diphoM);
   my_tupleZH->SetBranchAddress("diphoEta",&diphoEta);
   my_tupleZH->SetBranchAddress("diphopt",&diphopt);
@@ -467,6 +520,8 @@ void DiHAnalysis(){
   my_tupleZH->SetBranchAddress("jet3",&jet3);
   my_tupleZH->SetBranchAddress("jet1isMatched",&jet1isMatched);
   my_tupleZH->SetBranchAddress("jet2isMatched",&jet2isMatched);
+  my_tupleZH->SetBranchAddress("jet1isBMatched",&jet1isBMatched);
+  my_tupleZH->SetBranchAddress("jet2isBMatched",&jet2isBMatched);
   my_tupleZH->SetBranchAddress("csvBtag1",&csvBtag1); 
   my_tupleZH->SetBranchAddress("csvBtag2",&csvBtag2); 
   my_tupleZH->SetBranchAddress("csvBtag3",&csvBtag3);  
@@ -485,6 +540,8 @@ void DiHAnalysis(){
   my_tupleWH->SetBranchAddress("pho2pt",&pho2pt);
   my_tupleWH->SetBranchAddress("pho1Eta",&pho1Eta);
   my_tupleWH->SetBranchAddress("pho2Eta",&pho2Eta);
+  my_tupleWH->SetBranchAddress("pho1Phi",&pho1Phi);
+  my_tupleWH->SetBranchAddress("pho2Phi",&pho2Phi);
   my_tupleWH->SetBranchAddress("diphoM",&diphoM);
   my_tupleWH->SetBranchAddress("diphoEta",&diphoEta);
   my_tupleWH->SetBranchAddress("diphopt",&diphopt);
@@ -520,6 +577,8 @@ void DiHAnalysis(){
   my_tupleGGH->SetBranchAddress("pho2pt",&pho2pt);
   my_tupleGGH->SetBranchAddress("pho1Eta",&pho1Eta);
   my_tupleGGH->SetBranchAddress("pho2Eta",&pho2Eta);
+  my_tupleGGH->SetBranchAddress("pho1Phi",&pho1Phi);
+  my_tupleGGH->SetBranchAddress("pho2Phi",&pho2Phi);
   my_tupleGGH->SetBranchAddress("diphoM",&diphoM);
   my_tupleGGH->SetBranchAddress("diphoEta",&diphoEta);
   my_tupleGGH->SetBranchAddress("diphopt",&diphopt);
@@ -555,6 +614,8 @@ void DiHAnalysis(){
   my_tupleVBF->SetBranchAddress("pho2pt",&pho2pt);
   my_tupleVBF->SetBranchAddress("pho1Eta",&pho1Eta);
   my_tupleVBF->SetBranchAddress("pho2Eta",&pho2Eta);
+  my_tupleVBF->SetBranchAddress("pho1Phi",&pho1Phi);
+  my_tupleVBF->SetBranchAddress("pho2Phi",&pho2Phi);
   my_tupleVBF->SetBranchAddress("diphoM",&diphoM);
   my_tupleVBF->SetBranchAddress("diphoEta",&diphoEta);
   my_tupleVBF->SetBranchAddress("diphopt",&diphopt);
@@ -638,6 +699,12 @@ void DiHAnalysis(){
 	  || (csvMax)<= csvCut2 
 		) continue;
 	hmj1j2ZH->Fill(jetSumrecop4.M(),weight);
+        hDeltaRZH->Fill(sqrt((pho2Phi-pho1Phi)*(pho2Phi-pho1Phi)+(pho2Eta-pho1Eta)*(pho2Eta-pho1Eta)));
+	
+	if ((jet1isBMatched)==1 &&
+	    (jet2isBMatched)==1)
+	{hmj1j2ZHBMatched->Fill(jetSumrecop4.M(),weight);
+	}
 
      
     }
@@ -685,6 +752,7 @@ void DiHAnalysis(){
 	  || (csvMax)<= csvCut2 
 		) continue;
 	hmj1j2WH->Fill(jetSumrecop4.M(),weight);
+        hDeltaRWH->Fill(sqrt((pho2Phi-pho1Phi)*(pho2Phi-pho1Phi)+(pho2Eta-pho1Eta)*(pho2Eta-pho1Eta)));
 
     }
 
@@ -734,6 +802,7 @@ void DiHAnalysis(){
 	  || (csvMax)<= csvCut2 
 		) continue;
 	hmj1j2GGH->Fill(jetSumrecop4.M(),weight);
+        hDeltaRGGH->Fill(sqrt((pho2Phi-pho1Phi)*(pho2Phi-pho1Phi)+(pho2Eta-pho1Eta)*(pho2Eta-pho1Eta)));
 
     }
 
@@ -784,6 +853,7 @@ void DiHAnalysis(){
 	  || (csvMax)<= csvCut2 
 		) continue;
 	hmj1j2VBF->Fill(jetSumrecop4.M(),weight);
+        hDeltaRVBF->Fill(sqrt((pho2Phi-pho1Phi)*(pho2Phi-pho1Phi)+(pho2Eta-pho1Eta)*(pho2Eta-pho1Eta)));
     }
 
   }
@@ -889,6 +959,7 @@ void DiHAnalysis(){
 	hdijetEta->Fill(dijetEta);
 	hmj1j2->Fill(mj1j2,weight);
 	hmj1j2reco->Fill(jetSumrecop4.M(),weight);
+        hDeltaRHH->Fill(sqrt((pho2Phi-pho1Phi)*(pho2Phi-pho1Phi)+(pho2Eta-pho1Eta)*(pho2Eta-pho1Eta)));
 	hjet3->Fill(jet3);
 	hcsvBtag1->Fill(csvBtag1);
 	hcsvBtag2->Fill(csvBtag2);
@@ -1107,6 +1178,15 @@ void DiHAnalysis(){
    hs->Draw();
   cMassJet->cd(4);
   hmj1j2ZH->Draw();
+  hmj1j2ZHBMatched->Draw("same");
+
+  TCanvas* cDeltaR = new TCanvas("cDeltaR","DeltaR",100,100,800,800);
+  hDeltaRHH->Scale(0.5);
+  hDeltaRHH->Draw();
+  hDeltaRZH->Draw("same");
+  hDeltaRWH->Draw("same");
+  hDeltaRGGH->Draw("same");
+
 
   TCanvas* cMassVerifJet = new TCanvas("cMassVerifJet","Mass",100,100,800,800);  
 //Filling Bkg histogramm
@@ -1114,16 +1194,25 @@ void DiHAnalysis(){
   hbkg->Add(hmj1j2GGHCuts);
   hbkg->Add(hmj1j2WH);
   hbkg->Draw();
-  int bin1 = hbkg->TH1::FindBin(105);
-  int bin2 = hbkg->TH1::FindBin(130);
-  float NumBkg = hbkg->TH1::Integral(bin1,bin2);
-  float NumEvts = hmj1j2reco->TH1::Integral(bin1,bin2);
+
+  int bin1 = hbkg->FindBin(105);
+  int bin2 = hbkg->FindBin(130);
+  float NumBkg = hbkg->Integral(bin1,bin2);
+  float NumEvts = hmj1j2reco->Integral(bin1,bin2);
   float Significance = NumEvts/sqrt(NumBkg);
-  float Num = hbkg->TH1::Integral();
+  float Num = hbkg->Integral();
+  float NumZH = hmj1j2ZH->Integral();
+  float NumZHWindow = hmj1j2ZH->Integral(bin1,bin2);
+  float NumZHBMatched = hmj1j2ZHBMatched->Integral();
+  float NumZHBMatchedWindow = hmj1j2ZHBMatched->Integral(bin1,bin2);
 
   cout <<"Number of background events between 105 and 130 GeV : "<<NumBkg<<"\n"<<
     "Number of HH events between 105 and 130GeV : "<<NumEvts<<"\n"<<
-    "Number  events between 105 and 130GeV : "<<Num<<"\n"<<
+    "Number  events between 0 and 300GeV : "<<Num<<"\n"<<
+    "Number of ZH events between 0 and 300GeV : "<<NumZH<<"\n"<<
+    "Number of BMatched ZH events between 0 and 300GeV : "<<NumZHBMatched<<"\n"<<
+    "Number of ZH events between 105 and 130GeV : "<<NumZHWindow<<"\n"<<
+    "Number of BMatched ZH events between 105 and 130GeV : "<<NumZHBMatchedWindow<<"\n"<<
     "Smallest B Tag : "<<csvCut1<<"\n"<<
     "Biggest B Tag : "<<csvCut2<<"\n"<<
     "Significance : "<<Significance<<endl;
