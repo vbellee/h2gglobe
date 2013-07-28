@@ -28,6 +28,9 @@ void DiHAnalysis(){
   TTree* my_tupleVBF = (TTree*) in_file->GetObjectChecked("doubleHiggsAnalysis/vbf_m125_8TeV",
   						      "TTree");
 
+  TTree* my_tupleTTH = (TTree*) in_file->GetObjectChecked("doubleHiggsAnalysis/tth_m125_8TeV",
+  						      "TTree");
+
   //Prints only the number of entries
   gStyle->SetOptStat("");
 
@@ -37,10 +40,10 @@ void DiHAnalysis(){
 
   //Smallest Cut
   float csvCut1 ;
-  csvCut1 = 0.679;
+  csvCut1 = 0.244;
   //Biggest Cut
   float csvCut2 ;
-  csvCut2 = 0.679;
+  csvCut2 = 0.244;
 
 
   //Create the Histograms
@@ -302,6 +305,13 @@ void DiHAnalysis(){
 			 300);//Upper X Boundary
   hmj1j2VBF->SetFillColor(kBlue);
 
+
+  TH1F* hmj1j2TTH=new TH1F("mj1mj2TTH","Di-jet MassTTH;Mass;",
+			 60,//Number of bins
+			 0,//Lower X Boundary
+			 300);//Upper X Boundary
+  hmj1j2TTH->SetFillColor(kOrange);
+
   TH1F* hjet3=new TH1F("jet3","Jet3;;",
 			 11,//Number of bins
 			 -1,//Lower X Boundary
@@ -435,7 +445,11 @@ void DiHAnalysis(){
 			 10);//Upper X Boundary
   hDeltaRVBF->SetLineColor(kBlue);
 
-
+  TH1F* hDeltaRTTH=new TH1F("DeltaRTTH","DeltaR;DeltaR;",
+			 100,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hDeltaRTTH->SetLineColor(kBlue);
 
   //Create the fit functions to be modified with the Breit Wigner function
   //gdiphoM = new TF1("gdiphoM","2*sqrt(2)*[0]*[1]*sqrt([0]*[0]*([0]*[0]+[1]*[1]))/(3.1415*sqrt([0]*[0]+sqrt([0]*[0]*([0]*[0]+[1]*[1]))))/((x*x-[0]*[0])*(x*x-[0]*[0])+[0]*[0]*[1]*[1])",90,160);
@@ -647,6 +661,42 @@ void DiHAnalysis(){
   my_tupleVBF->SetBranchAddress("tcheBtag3",&tcheBtag3);
   my_tupleVBF->SetBranchAddress("weight",&weight);
 
+  my_tupleTTH->SetBranchAddress("pho1pt",&pho1pt);
+  my_tupleTTH->SetBranchAddress("pho2pt",&pho2pt);
+  my_tupleTTH->SetBranchAddress("pho1Eta",&pho1Eta);
+  my_tupleTTH->SetBranchAddress("pho2Eta",&pho2Eta);
+  my_tupleTTH->SetBranchAddress("pho1Phi",&pho1Phi);
+  my_tupleTTH->SetBranchAddress("pho2Phi",&pho2Phi);
+  my_tupleTTH->SetBranchAddress("diphoM",&diphoM);
+  my_tupleTTH->SetBranchAddress("diphoEta",&diphoEta);
+  my_tupleTTH->SetBranchAddress("diphopt",&diphopt);
+  my_tupleTTH->SetBranchAddress("dijetEta",&dijetEta);
+  my_tupleTTH->SetBranchAddress("jet1Pt",&jet1Pt);
+  my_tupleTTH->SetBranchAddress("jet2Pt",&jet2Pt);
+  my_tupleTTH->SetBranchAddress("jet1p4",&jet1p4);
+  my_tupleTTH->SetBranchAddress("jet2p4",&jet2p4);
+  my_tupleTTH->SetBranchAddress("jet3p4",&jet3p4);
+  my_tupleTTH->SetBranchAddress("jet1genPt",&jet1genPt);
+  my_tupleTTH->SetBranchAddress("jet2genPt",&jet2genPt);
+  my_tupleTTH->SetBranchAddress("jet1Eta",&jet1Eta);
+  my_tupleTTH->SetBranchAddress("jet2Eta",&jet2Eta);
+  my_tupleTTH->SetBranchAddress("mj1j2",&mj1j2);
+  my_tupleTTH->SetBranchAddress("jet3",&jet3);
+  my_tupleTTH->SetBranchAddress("jet1isMatched",&jet1isMatched);
+  my_tupleTTH->SetBranchAddress("jet2isMatched",&jet2isMatched);
+  my_tupleTTH->SetBranchAddress("csvBtag1",&csvBtag1); 
+  my_tupleTTH->SetBranchAddress("csvBtag2",&csvBtag2); 
+  my_tupleTTH->SetBranchAddress("csvBtag3",&csvBtag3);  
+  my_tupleTTH->SetBranchAddress("csvMvaBtag1",&csvMvaBtag1); 
+  my_tupleTTH->SetBranchAddress("csvMvaBtag2",&csvMvaBtag2); 
+  my_tupleTTH->SetBranchAddress("csvMvaBtag3",&csvMvaBtag3); 
+  my_tupleTTH->SetBranchAddress("jetProbBtag1",&jetProbBtag1); 
+  my_tupleTTH->SetBranchAddress("jetProbBtag2",&jetProbBtag2); 
+  my_tupleTTH->SetBranchAddress("jetProbBtag3",&jetProbBtag3); 
+  my_tupleTTH->SetBranchAddress("tcheBtag1",&tcheBtag1); 
+  my_tupleTTH->SetBranchAddress("tcheBtag2",&tcheBtag2); 
+  my_tupleTTH->SetBranchAddress("tcheBtag3",&tcheBtag3);
+  my_tupleTTH>SetBranchAddress("weight",&weight);
   
   for (int irow=0;irow<my_tupleZH->GetEntries();++irow){
     my_tupleZH->GetEntry(irow);
@@ -699,7 +749,7 @@ void DiHAnalysis(){
 	  || (csvMax)<= csvCut2 
 		) continue;
 	hmj1j2ZH->Fill(jetSumrecop4.M(),weight);
-        hDeltaRZH->Fill(sqrt((pho2Phi-pho1Phi)*(pho2Phi-pho1Phi)+(pho2Eta-pho1Eta)*(pho2Eta-pho1Eta)));
+        hDeltaRZH->Fill(sqrt(asin(sin(pho2Phi-pho1Phi))*asin(sin(pho2Phi-pho1Phi))+(pho2Eta-pho1Eta)*(pho2Eta-pho1Eta)));
 	
 	if ((jet1isBMatched)==1 &&
 	    (jet2isBMatched)==1)
@@ -752,7 +802,7 @@ void DiHAnalysis(){
 	  || (csvMax)<= csvCut2 
 		) continue;
 	hmj1j2WH->Fill(jetSumrecop4.M(),weight);
-        hDeltaRWH->Fill(sqrt((pho2Phi-pho1Phi)*(pho2Phi-pho1Phi)+(pho2Eta-pho1Eta)*(pho2Eta-pho1Eta)));
+        hDeltaRWH->Fill(sqrt(asin(sin(pho2Phi-pho1Phi))*asin(sin(pho2Phi-pho1Phi))+(pho2Eta-pho1Eta)*(pho2Eta-pho1Eta)));
 
     }
 
@@ -802,7 +852,7 @@ void DiHAnalysis(){
 	  || (csvMax)<= csvCut2 
 		) continue;
 	hmj1j2GGH->Fill(jetSumrecop4.M(),weight);
-        hDeltaRGGH->Fill(sqrt((pho2Phi-pho1Phi)*(pho2Phi-pho1Phi)+(pho2Eta-pho1Eta)*(pho2Eta-pho1Eta)));
+        hDeltaRGGH->Fill(sqrt(asin(sin(pho2Phi-pho1Phi))*asin(sin(pho2Phi-pho1Phi))+(pho2Eta-pho1Eta)*(pho2Eta-pho1Eta)));
 
     }
 
@@ -853,7 +903,57 @@ void DiHAnalysis(){
 	  || (csvMax)<= csvCut2 
 		) continue;
 	hmj1j2VBF->Fill(jetSumrecop4.M(),weight);
-        hDeltaRVBF->Fill(sqrt((pho2Phi-pho1Phi)*(pho2Phi-pho1Phi)+(pho2Eta-pho1Eta)*(pho2Eta-pho1Eta)));
+        hDeltaRVBF->Fill(sqrt(asin(sin(pho2Phi-pho1Phi))*asin(sin(pho2Phi-pho1Phi))+(pho2Eta-pho1Eta)*(pho2Eta-pho1Eta)));
+    }
+
+  }
+
+
+  for (int irow=0;irow<my_tupleTTH->GetEntries();++irow){
+    my_tupleTTH->GetEntry(irow);
+
+        float jet1recoPt = (jet1Pt-jet1genPt)*0.9+jet1genPt;
+	float jet2recoPt = (jet2Pt-jet2genPt)*0.9+jet2genPt;
+
+	TLorentzVector  jet1recop4 = *jet1p4;
+	jet1recop4.SetPx((jet1recop4.Px())*jet1recoPt/jet1Pt);
+	jet1recop4.SetPy((jet1recop4.Py())*jet1recoPt/jet1Pt);
+	jet1recop4.SetPz((jet1recop4.Pz())*jet1recoPt/jet1Pt);
+	jet1recop4.SetE((jet1recop4.E())*jet1recoPt/jet1Pt);
+	TLorentzVector  jet2recop4 = *jet2p4;
+	jet2recop4.SetPx((jet2recop4.Px())*jet2recoPt/jet2Pt);
+	jet2recop4.SetPy((jet2recop4.Py())*jet2recoPt/jet2Pt);
+	jet2recop4.SetPz((jet2recop4.Pz())*jet2recoPt/jet2Pt);
+	jet2recop4.SetE((jet2recop4.E())*jet2recoPt/jet2Pt);
+	TLorentzVector jetSumrecop4 = jet1recop4 + jet2recop4;
+
+    if ((pho1pt/diphoM) > (1/2) &&
+	(pho2pt/diphoM) > (25/120)&&
+	(jet3) < 0 &&
+	(pho1Eta) < 2.5 &&
+	(pho1Eta) > -2.5 &&
+	(pho2Eta) < 2.5 &&
+	(pho2Eta) > -2.5 &&
+	(jet1recop4.Pt()) > 40 &&
+	(jet2recop4.Pt()) > 40 &&
+	(jet1Eta) < 2.1 &&
+	(jet1Eta) > -2.1 &&
+	(jet2Eta) < 2.1 &&
+	(jet2Eta) > -2.1
+	
+	)
+      {
+
+        //Remplissage des histogrammes
+	float csvMin;
+	csvMin = min(csvBtag1,csvBtag2);
+	float csvMax;
+	csvMax = max(csvBtag1,csvBtag2);
+	if( (csvMin)<=csvCut1 
+	  || (csvMax)<= csvCut2 
+		) continue;
+	hmj1j2TTH->Fill(jetSumrecop4.M(),weight);
+        hDeltaRTTH->Fill(sqrt(asin(sin(pho2Phi-pho1Phi))*asin(sin(pho2Phi-pho1Phi))+(pho2Eta-pho1Eta)*(pho2Eta-pho1Eta)));
     }
 
   }
@@ -959,7 +1059,7 @@ void DiHAnalysis(){
 	hdijetEta->Fill(dijetEta);
 	hmj1j2->Fill(mj1j2,weight);
 	hmj1j2reco->Fill(jetSumrecop4.M(),weight);
-        hDeltaRHH->Fill(sqrt((pho2Phi-pho1Phi)*(pho2Phi-pho1Phi)+(pho2Eta-pho1Eta)*(pho2Eta-pho1Eta)));
+        hDeltaRHH->Fill(sqrt(asin(sin(pho2Phi-pho1Phi))*asin(sin(pho2Phi-pho1Phi))+(pho2Eta-pho1Eta)*(pho2Eta-pho1Eta)));
 	hjet3->Fill(jet3);
 	hcsvBtag1->Fill(csvBtag1);
 	hcsvBtag2->Fill(csvBtag2);
@@ -1173,6 +1273,7 @@ void DiHAnalysis(){
    hs->Add(hmj1j2GGHCuts);
    hs->Add(hmj1j2WH);
    hs->Add(hmj1j2ZH);
+   hs->Add(hmj1j2TTH);
    //hs->Add(hmj1j2VBF);
    hs->Add(hmj1j2reco);
    hs->Draw();
@@ -1186,33 +1287,40 @@ void DiHAnalysis(){
   hDeltaRZH->Draw("same");
   hDeltaRWH->Draw("same");
   hDeltaRGGH->Draw("same");
+  hDeltaRTTH->Draw("same");
 
 
   TCanvas* cMassVerifJet = new TCanvas("cMassVerifJet","Mass",100,100,800,800);  
 //Filling Bkg histogramm
   hbkg->Add(hmj1j2ZH);
+  hbkg->Add(hmj1j2TTH);
   hbkg->Add(hmj1j2GGHCuts);
   hbkg->Add(hmj1j2WH);
   hbkg->Draw();
 
-  int bin1 = hbkg->FindBin(105);
-  int bin2 = hbkg->FindBin(130);
+  int bin1 = hbkg->FindBin(110);
+  int bin2 = hbkg->FindBin(140);
   float NumBkg = hbkg->Integral(bin1,bin2);
   float NumEvts = hmj1j2reco->Integral(bin1,bin2);
   float Significance = NumEvts/sqrt(NumBkg);
   float Num = hbkg->Integral();
   float NumZH = hmj1j2ZH->Integral();
   float NumZHWindow = hmj1j2ZH->Integral(bin1,bin2);
+  float NumWHWindow = hmj1j2WH->Integral(bin1,bin2);
+  float NumGGHWindow = hmj1j2GGHCuts->Integral(bin1,bin2);
   float NumZHBMatched = hmj1j2ZHBMatched->Integral();
   float NumZHBMatchedWindow = hmj1j2ZHBMatched->Integral(bin1,bin2);
 
   cout <<"Number of background events between 105 and 130 GeV : "<<NumBkg<<"\n"<<
-    "Number of HH events between 105 and 130GeV : "<<NumEvts<<"\n"<<
+    "Number of HH events between 110 and 140GeV : "<<NumEvts<<"\n"<<
     "Number  events between 0 and 300GeV : "<<Num<<"\n"<<
     "Number of ZH events between 0 and 300GeV : "<<NumZH<<"\n"<<
     "Number of BMatched ZH events between 0 and 300GeV : "<<NumZHBMatched<<"\n"<<
-    "Number of ZH events between 105 and 130GeV : "<<NumZHWindow<<"\n"<<
-    "Number of BMatched ZH events between 105 and 130GeV : "<<NumZHBMatchedWindow<<"\n"<<
+    "Number of ZH events between 110 and 140GeV : "<<NumZHWindow<<"\n"<<
+    "Number of WH events between 110 and 140GeV : "<<NumWHWindow<<"\n"<<
+    "Number of GGH events between 110 and 140GeV : "<<NumGGHWindow<<"\n"<<
+    "Number of BMatched ZH events between 110 and 140GeV : "<<NumZHBMatchedWindow<<"\n"<<
+    "Number of BMatched ZH events over ZH events between 110 and 140GeV : "<<NumZHBMatchedWindow/NumZHWindow<<"\n"<<
     "Smallest B Tag : "<<csvCut1<<"\n"<<
     "Biggest B Tag : "<<csvCut2<<"\n"<<
     "Significance : "<<Significance<<endl;
@@ -1246,12 +1354,12 @@ void DiHAnalysis(){
 			 3,
 			 0,
 			 3);//Upper X Boundary
-  hSignificance->Fill(0,0,0.0403);
-  hSignificance->Fill(0,1,0.0443);
-  hSignificance->Fill(0,2,0.043);
-  hSignificance->Fill(1,1,0.0392);
-  hSignificance->Fill(1,2,0.038);
-  hSignificance->Fill(2,2,0.0278);
+  hSignificance->Fill(0,0,5.13);
+  hSignificance->Fill(0,1,5.91);
+  hSignificance->Fill(0,2,5.75);
+  hSignificance->Fill(1,1,5.73);
+  hSignificance->Fill(1,2,5.68);
+  hSignificance->Fill(2,2,3.86);
 
 
   TCanvas* cSignificance = new TCanvas("cSignificance","Significance",100,100,800,800);
