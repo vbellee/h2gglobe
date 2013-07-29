@@ -37,6 +37,7 @@ jet_algoPF1_nNeutrals
 jet_algoPF1_pfloose
 jet_algoPF1_vbfMatched
 jet_algoPF1_genMatched
+jet_algoPF1_bgenMatched
 jet_algoPF1_genPt
 jet_algoPF1_genDr
 jet_algoPF1_full_mva_ext
