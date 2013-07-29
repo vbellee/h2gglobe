@@ -26,6 +26,7 @@ public:
     float weight;
     float sampleweight;
     
+    int nJets;
     int   jet1, jet2, jet3;
     float diphomva;
     float pho1pt;

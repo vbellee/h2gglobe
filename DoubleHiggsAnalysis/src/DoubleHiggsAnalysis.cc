@@ -67,6 +67,7 @@ DoubleHiggsTreeVariables::DoubleHiggsTreeVariables() :
     diphosM(999),	
     diphosMwv(999),	
     diphovtxProb(-1),
+    nJets(0),
     jet1(-1),
     jet2(-1),
     jet3(-1),
@@ -167,6 +168,7 @@ void DoubleHiggsAnalysis::Init(LoopAll& l)
 	l.BookExternalTreeBranch("jet3p4",&(tree_.jet3p4),32000,0, "doubleHiggsAnalysis");
 	l.BookExternalTreeBranch("jet2p4",&(tree_.jet2p4),32000,0, "doubleHiggsAnalysis");
 	l.BookExternalTreeBranch("jet1p4",&(tree_.jet1p4),32000,0, "doubleHiggsAnalysis");
+	l.BookExternalTreeBranch( "nJets",          &tree_.nJets, "doubleHiggsAnalysis" ); 
 	l.BookExternalTreeBranch( "jet1",          &tree_.jet1, "doubleHiggsAnalysis" ); 
 	l.BookExternalTreeBranch( "jet2",          &tree_.jet2, "doubleHiggsAnalysis" ); 
 	l.BookExternalTreeBranch( "jet3",          &tree_.jet3, "doubleHiggsAnalysis" ); 
@@ -358,6 +360,7 @@ bool DoubleHiggsAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, T
 	std::vector<int> sorted_jets;
 	for(int ijet=0; ijet<l.jet_algoPF1_n; ++ijet) { 
 	    TLorentzVector * p4 = (TLorentzVector*)l.jet_algoPF1_p4->At(ijet);
+	    if( p4->Pt() < 30 || fabs(p4->Eta()) > 2.4 ) { continue; }
 	    if( p4->DeltaR(lead_p4) > 0.5 && p4->DeltaR(sublead_p4) > 0.5 && p4->Pt() > 20. ) {
 		sorted_jets.push_back(ijet);
 	    }
@@ -426,6 +429,8 @@ bool DoubleHiggsAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, T
 	    tree_.diphoM        = diphoton.M();
 	    tree_.diphoEta      = diphoton.Eta();
 	    tree_.diphomva      = diphobdt_output;
+	    
+	    tree_.nJets = sorted_jets.size();
 	    
 	    tree_.jet1 = ijet1;
 	    tree_.jet2 = ijet2;
