@@ -27,16 +27,29 @@ DoubleHiggsTreeVariables::DoubleHiggsTreeVariables() :
     jet1p4(new TLorentzVector(0,0,0,0)),
     jet2p4(new TLorentzVector(0,0,0,0)),
     jet3p4(new TLorentzVector(0,0,0,0)),
+    jet4p4(new TLorentzVector(0,0,0,0)),
     jet1isMatched(false),	
-    jet2isMatched(false),	
+    jet2isMatched(false),
+    jet3isMatched(false),	
+    jet4isMatched(false),	
     jet1isBMatched(false),	
     jet2isBMatched(false),	
+    jet3isBMatched(false),	
+    jet4isBMatched(false),	
     jet1genPt(0),	
     jet2genPt(0),	
+    jet3genPt(0),	
+    jet4genPt(0),	
     jet1genDr(0),	
     jet2genDr(0),	
+    jet3genDr(0),	
+    jet4genDr(0),	
     jet1Pt(0),		
-    jet2Pt(0),		
+    jet2Pt(0),	
+    jet1PtRank(0),		
+    jet2PtRank(0),
+    jet3PtRank(0),		
+    jet4PtRank(0),		
     jet1Eta(999),		
     jet2Eta(999),		
     zepp(999),		
@@ -71,6 +84,7 @@ DoubleHiggsTreeVariables::DoubleHiggsTreeVariables() :
     jet1(-1),
     jet2(-1),
     jet3(-1),
+    jet4(-1),
     pho1Matched(false), pho2Matched(false),corrVeretx(false),
     pho1CiC(-1),pho2CiC(-1), diphoMVA(-999.),
     csvBtag1(-999),
@@ -164,7 +178,8 @@ void DoubleHiggsAnalysis::Init(LoopAll& l)
 	l.BookExternalTreeBranch( "diphopt",       &tree_.diphopt, "doubleHiggsAnalysis" );       
 	l.BookExternalTreeBranch( "diphoM",        &tree_.diphoM, "doubleHiggsAnalysis" );        
 	l.BookExternalTreeBranch( "diphoEta",      &tree_.diphoEta, "doubleHiggsAnalysis" );      
-	l.BookExternalTreeBranch( "dijetEta",      &tree_.dijetEta, "doubleHiggsAnalysis" );      
+	l.BookExternalTreeBranch( "dijetEta",      &tree_.dijetEta, "doubleHiggsAnalysis" ); 
+	l.BookExternalTreeBranch("jet4p4",&(tree_.jet4p4),32000,0, "doubleHiggsAnalysis");     
 	l.BookExternalTreeBranch("jet3p4",&(tree_.jet3p4),32000,0, "doubleHiggsAnalysis");
 	l.BookExternalTreeBranch("jet2p4",&(tree_.jet2p4),32000,0, "doubleHiggsAnalysis");
 	l.BookExternalTreeBranch("jet1p4",&(tree_.jet1p4),32000,0, "doubleHiggsAnalysis");
@@ -172,16 +187,29 @@ void DoubleHiggsAnalysis::Init(LoopAll& l)
 	l.BookExternalTreeBranch( "jet1",          &tree_.jet1, "doubleHiggsAnalysis" ); 
 	l.BookExternalTreeBranch( "jet2",          &tree_.jet2, "doubleHiggsAnalysis" ); 
 	l.BookExternalTreeBranch( "jet3",          &tree_.jet3, "doubleHiggsAnalysis" ); 
+	l.BookExternalTreeBranch( "jet4",          &tree_.jet4, "doubleHiggsAnalysis" ); 
 	l.BookExternalTreeBranch( "jet1isMatched", &tree_.jet1isMatched, "doubleHiggsAnalysis" ); 
-	l.BookExternalTreeBranch( "jet2isMatched", &tree_.jet2isMatched, "doubleHiggsAnalysis" ); 
+	l.BookExternalTreeBranch( "jet2isMatched", &tree_.jet2isMatched, "doubleHiggsAnalysis" );
+	l.BookExternalTreeBranch( "jet3isMatched", &tree_.jet3isMatched, "doubleHiggsAnalysis" ); 
+	l.BookExternalTreeBranch( "jet4isMatched", &tree_.jet4isMatched, "doubleHiggsAnalysis" );
 	l.BookExternalTreeBranch( "jet1isBMatched", &tree_.jet1isBMatched, "doubleHiggsAnalysis" ); 
 	l.BookExternalTreeBranch( "jet2isBMatched", &tree_.jet2isBMatched, "doubleHiggsAnalysis" ); 
+	l.BookExternalTreeBranch( "jet3isBMatched", &tree_.jet3isBMatched, "doubleHiggsAnalysis" ); 
+	l.BookExternalTreeBranch( "jet4isBMatched", &tree_.jet4isBMatched, "doubleHiggsAnalysis" ); 
 	l.BookExternalTreeBranch( "jet1genPt",     &tree_.jet1genPt, "doubleHiggsAnalysis" );     
-	l.BookExternalTreeBranch( "jet2genPt",     &tree_.jet2genPt, "doubleHiggsAnalysis" );     
+	l.BookExternalTreeBranch( "jet2genPt",     &tree_.jet2genPt, "doubleHiggsAnalysis" );    
+	l.BookExternalTreeBranch( "jet3genPt",     &tree_.jet3genPt, "doubleHiggsAnalysis" );     
+	l.BookExternalTreeBranch( "jet4genPt",     &tree_.jet4genPt, "doubleHiggsAnalysis" );  
 	l.BookExternalTreeBranch( "jet1genDr",     &tree_.jet1genDr, "doubleHiggsAnalysis" );     
 	l.BookExternalTreeBranch( "jet2genDr",     &tree_.jet2genDr, "doubleHiggsAnalysis" );     
+	l.BookExternalTreeBranch( "jet3genDr",     &tree_.jet3genDr, "doubleHiggsAnalysis" );     
+	l.BookExternalTreeBranch( "jet4genDr",     &tree_.jet4genDr, "doubleHiggsAnalysis" );   
 	l.BookExternalTreeBranch( "jet1Pt",        &tree_.jet1Pt, "doubleHiggsAnalysis" );        
-	l.BookExternalTreeBranch( "jet2Pt",        &tree_.jet2Pt, "doubleHiggsAnalysis" );        
+	l.BookExternalTreeBranch( "jet2Pt",        &tree_.jet2Pt, "doubleHiggsAnalysis" );    
+	l.BookExternalTreeBranch( "jet1PtRank",        &tree_.jet1PtRank, "doubleHiggsAnalysis" );        
+	l.BookExternalTreeBranch( "jet2PtRank",        &tree_.jet2PtRank, "doubleHiggsAnalysis" );   
+	l.BookExternalTreeBranch( "jet3PtRank",        &tree_.jet3PtRank, "doubleHiggsAnalysis" );        
+	l.BookExternalTreeBranch( "jet4PtRank",        &tree_.jet4PtRank, "doubleHiggsAnalysis" );       
 	l.BookExternalTreeBranch( "jet1Eta",       &tree_.jet1Eta, "doubleHiggsAnalysis" );       
 	l.BookExternalTreeBranch( "jet2Eta",       &tree_.jet2Eta, "doubleHiggsAnalysis" );       
 	l.BookExternalTreeBranch( "zepp",          &tree_.zepp, "doubleHiggsAnalysis" );          
@@ -223,6 +251,7 @@ void DoubleHiggsAnalysis::Init(LoopAll& l)
 	l.BookExternalTreeBranch( "csvBtag1",  &tree_.csvBtag1, "doubleHiggsAnalysis" );
 	l.BookExternalTreeBranch( "csvBtag2",  &tree_.csvBtag2, "doubleHiggsAnalysis" );
 	l.BookExternalTreeBranch( "csvBtag3",  &tree_.csvBtag3, "doubleHiggsAnalysis" );
+	l.BookExternalTreeBranch( "csvBtag4",  &tree_.csvBtag4, "doubleHiggsAnalysis" );
 	l.BookExternalTreeBranch( "csvMvaBtag1",  &tree_.csvMvaBtag1, "doubleHiggsAnalysis" );
 	l.BookExternalTreeBranch( "csvMvaBtag2",  &tree_.csvMvaBtag2, "doubleHiggsAnalysis" );
 	l.BookExternalTreeBranch( "csvMvaBtag3",  &tree_.csvMvaBtag3, "doubleHiggsAnalysis" );
@@ -370,22 +399,40 @@ bool DoubleHiggsAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, T
 
 	switchJetIdVertex( l, l.dipho_vtxind[diphoton_id] );
 
-	/// select two highest pt jets passing loose PU jet Id
+	//Sort jets by Pt
+	std::vector<int> pt_sorted_jets;
+	for(int ijet=0; ijet<l.jet_algoPF1_n; ++ijet) { 
+	    TLorentzVector * p4 = (TLorentzVector*)l.jet_algoPF1_p4->At(ijet);
+	    if( p4->Pt() < 30 || fabs(p4->Eta()) > 2.4 ) { continue; }
+	    if( p4->DeltaR(lead_p4) > 0.5 && p4->DeltaR(sublead_p4) > 0.5 && p4->Pt() > 20. ) {
+                           pt_sorted_jets.push_back(ijet);
+	    }
+	}
+
+	std::sort(pt_sorted_jets.begin(),pt_sorted_jets.end(),
+		  ClonesSorter<TLorentzVector,double,std::greater<double> >(l.jet_algoPF1_p4,&TLorentzVector::Pt)); 
+
+
+	/// select fourhighestcsv jets passing loose PU jet Id
 	int ijet1 = -1;
 	int ijet2 = -1;
 	int ijet3 = -1;
+	int ijet4 = -1;
 	for(size_t itjet=0; itjet<sorted_jets.size(); ++itjet ) {
 	    int ijet = sorted_jets[itjet];
+	    int rank = std::find(pt_sorted_jets.begin(),pt_sorted_jets.end(),ijet)-pt_sorted_jets.begin();
 	    bool PUjetId = PileupJetIdentifier::passJetId(l.jet_algoPF1_simple_wp_level[ijet], PileupJetIdentifier::kLoose);
-	    if ( PUjetId && ijet1<0 ) ijet1 = ijet;
-	    else if ( PUjetId && ijet2<0 ) ijet2 = ijet;
-	    else if ( PUjetId && ijet3<0 ) ijet3 = ijet;
+	    if ( PUjetId && ijet1<0 ) {ijet1 = ijet;int rank1 =rank;}
+	    else if ( PUjetId && ijet2<0 ) {ijet2 = ijet;int rank2 =rank;}
+            else if ( PUjetId && ijet3<0 ) {ijet3 = ijet;int rank3 =rank;}
+	    else if ( PUjetId && ijet4<0 ) {ijet4 = ijet;int rank4 =rank;}
 	    //else if ( ijet1!=-1 && ijet2!=-1 ) break;
 	}
 	
-	if(ijet1>=0) { *(tree_.jet1p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet1); }
-	if(ijet2>=0) { *(tree_.jet2p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet2); }
-	if(ijet3>=0) { *(tree_.jet3p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet3); }
+	if(ijet1>=0) { *(tree_.jet1p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet1);tree_.jet1PtRank =rank1 }
+	if(ijet2>=0) { *(tree_.jet2p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet2);tree_.jet2PtRank =rank1 }
+	if(ijet3>=0) { *(tree_.jet3p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet3);tree_.jet3PtRank =rank1 }
+	if(ijet4>=0) { *(tree_.jet4p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet4);tree_.jet4PtRank =rank1 }
 
 
 	TLorentzVector sumj1;
@@ -397,6 +444,7 @@ bool DoubleHiggsAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, T
 	TLorentzVector & jet1( *(tree_.jet1p4)  );
 	TLorentzVector & jet2( *(tree_.jet2p4)  );
 	TLorentzVector & jet3( *(tree_.jet3p4)  );
+	TLorentzVector & jet4( *(tree_.jet4p4)  );
 	
 	if( ijet1 >= 0 && ijet2 >= 0) {
 
@@ -435,6 +483,7 @@ bool DoubleHiggsAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, T
 	    tree_.jet1 = ijet1;
 	    tree_.jet2 = ijet2;
 	    tree_.jet3 = ijet3;
+	    tree_.jet4 = ijet4;
 	    
 	    if( ijet1 >= 0 ) {
 		tree_.jet1isMatched = l.jet_algoPF1_genMatched[ijet1];
@@ -481,11 +530,23 @@ bool DoubleHiggsAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, T
 
 	    //Entries added 08/07/2013
 	    if( ijet3 >= 0 ) {
+		tree_.jet3isMatched = l.jet_algoPF1_genMatched[ijet3];
+		tree_.jet3isBMatched = l.jet_algoPF1_bgenMatched[ijet3];
+		tree_.jet3genPt     = l.jet_algoPF1_genPt[ijet3];
+		tree_.jet3genDr     = l.jet_algoPF1_genDr[ijet3];
 		tree_.csvBtag3 = l.jet_algoPF1_csvBtag[ijet3];
 		tree_.csvMvaBtag3 = l.jet_algoPF1_csvMvaBtag[ijet3];
 		tree_.jetProbBtag3 = l.jet_algoPF1_jetProbBtag[ijet3];
 		tree_.tcheBtag3 = l.jet_algoPF1_tcheBtag[ijet3];
 	    }
+
+	    if( ijet4 >= 0 ) {
+		tree_.jet4isMatched = l.jet_algoPF1_genMatched[ijet4];
+		tree_.jet4isBMatched = l.jet_algoPF1_bgenMatched[ijet4];
+		tree_.jet4genPt     = l.jet_algoPF1_genPt[ijet4];
+		tree_.jet4genDr     = l.jet_algoPF1_genDr[ijet4];
+		tree_.csvBtag4 = l.jet_algoPF1_csvBtag[ijet4];
+	    }	    
 
 
 	    
