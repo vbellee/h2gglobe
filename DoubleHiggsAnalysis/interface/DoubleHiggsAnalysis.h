@@ -27,7 +27,8 @@ public:
     float sampleweight;
     
     int nJets;
-    int   jet1, jet2, jet3;
+    int   jet1, jet2, jet3, jet4;
+    int   jet1PtRank, jet2PtRank, jet3PtRank, jet4PtRank;
     float diphomva;
     float pho1pt;
     float pho2pt;
@@ -36,16 +37,19 @@ public:
     float diphoEta;
     float dijetEta;
     
-    TLorentzVector * jet1p4, * jet2p4, * jet3p4;
-    bool jet1isMatched,jet2isMatched;
-    bool  jet1isBMatched,jet2isBMatched;
-    float jet1genPt,jet2genPt;
-    float jet1genDr,jet2genDr;
+    TLorentzVector * jet1p4, * jet2p4, * jet3p4,  * jet4p4;
+    bool  jet1isMatched, jet2isMatched, jet3isMatched, jet4isMatched;
+    bool  jet1isBMatched,jet2isBMatched,jet3isBMatched,jet4isBMatched;
+    float jet1genPt,jet2genPt,jet3genPt,jet4genPt;
+    float jet1genDr,jet2genDr,jet3genDr,jet4genDr;
     float jet1Pt, jet2Pt, jet1Eta, jet2Eta, zepp, mj1j2, dphi, dphiJJ, dphiJJ2, deltaEta3;
     bool  jet1PileupID,jet2PileupID ;
     bool  isSignal;
     int   mctype;
-    float csvBtag1, csvBtag2, csvBtag3, csvMvaBtag1, csvMvaBtag2, csvMvaBtag3, jetProbBtag1, jetProbBtag2, jetProbBtag3, tcheBtag1, tcheBtag2, tcheBtag3;
+    float csvBtag1, csvBtag2, csvBtag3, csvBtag4, 
+	csvMvaBtag1, csvMvaBtag2, csvMvaBtag3, csvMvaBtag4,
+	jetProbBtag1, jetProbBtag2, jetProbBtag3,  jetProbBtag4, 
+	tcheBtag1, tcheBtag2, tcheBtag3, tcheBtag4;
     
     float pho1energy;
     float pho2energy;

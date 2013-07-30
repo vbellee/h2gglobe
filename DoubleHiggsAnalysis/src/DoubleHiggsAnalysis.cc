@@ -385,56 +385,43 @@ bool DoubleHiggsAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, T
 					      phoid_mvaout_lead,phoid_mvaout_sublead);
 	
 		
-	// clean and sort jets
-	std::vector<int> sorted_jets;
+	// clean and sort jets by csv but also save the pt sorting
+	std::vector<int> sorted_jets, pt_sorted_jets;
 	for(int ijet=0; ijet<l.jet_algoPF1_n; ++ijet) { 
 	    TLorentzVector * p4 = (TLorentzVector*)l.jet_algoPF1_p4->At(ijet);
 	    if( p4->Pt() < 30 || fabs(p4->Eta()) > 2.4 ) { continue; }
 	    if( p4->DeltaR(lead_p4) > 0.5 && p4->DeltaR(sublead_p4) > 0.5 && p4->Pt() > 20. ) {
 		sorted_jets.push_back(ijet);
+		pt_sorted_jets.push_back(ijet);
 	    }
 	}
 	std::sort(sorted_jets.begin(),sorted_jets.end(),
 		  SimpleSorter<float,std::greater<float> >(l.jet_algoPF1_csvBtag) );
-
-	switchJetIdVertex( l, l.dipho_vtxind[diphoton_id] );
-
-	//Sort jets by Pt
-	std::vector<int> pt_sorted_jets;
-	for(int ijet=0; ijet<l.jet_algoPF1_n; ++ijet) { 
-	    TLorentzVector * p4 = (TLorentzVector*)l.jet_algoPF1_p4->At(ijet);
-	    if( p4->Pt() < 30 || fabs(p4->Eta()) > 2.4 ) { continue; }
-	    if( p4->DeltaR(lead_p4) > 0.5 && p4->DeltaR(sublead_p4) > 0.5 && p4->Pt() > 20. ) {
-                           pt_sorted_jets.push_back(ijet);
-	    }
-	}
-
 	std::sort(pt_sorted_jets.begin(),pt_sorted_jets.end(),
 		  ClonesSorter<TLorentzVector,double,std::greater<double> >(l.jet_algoPF1_p4,&TLorentzVector::Pt)); 
-
-
+	
+	switchJetIdVertex( l, l.dipho_vtxind[diphoton_id] );
+	
 	/// select fourhighestcsv jets passing loose PU jet Id
-	int ijet1 = -1;
-	int ijet2 = -1;
-	int ijet3 = -1;
-	int ijet4 = -1;
+	int ijet1 = -1, rank1 =-1;
+	int ijet2 = -1, rank2 =-1;
+	int ijet3 = -1, rank3 =-1;
+	int ijet4 = -1, rank4 =-1;
 	for(size_t itjet=0; itjet<sorted_jets.size(); ++itjet ) {
 	    int ijet = sorted_jets[itjet];
 	    int rank = std::find(pt_sorted_jets.begin(),pt_sorted_jets.end(),ijet)-pt_sorted_jets.begin();
 	    bool PUjetId = PileupJetIdentifier::passJetId(l.jet_algoPF1_simple_wp_level[ijet], PileupJetIdentifier::kLoose);
-	    if ( PUjetId && ijet1<0 ) {ijet1 = ijet;int rank1 =rank;}
-	    else if ( PUjetId && ijet2<0 ) {ijet2 = ijet;int rank2 =rank;}
-            else if ( PUjetId && ijet3<0 ) {ijet3 = ijet;int rank3 =rank;}
-	    else if ( PUjetId && ijet4<0 ) {ijet4 = ijet;int rank4 =rank;}
-	    //else if ( ijet1!=-1 && ijet2!=-1 ) break;
+	    if ( PUjetId && ijet1<0 ) {ijet1 = ijet;      rank1 =rank;}
+	    else if ( PUjetId && ijet2<0 ) {ijet2 = ijet; rank2 =rank;}
+            else if ( PUjetId && ijet3<0 ) {ijet3 = ijet; rank3 =rank;}
+	    else if ( PUjetId && ijet4<0 ) {ijet4 = ijet; rank4 =rank;}
 	}
 	
-	if(ijet1>=0) { *(tree_.jet1p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet1);tree_.jet1PtRank =rank1 }
-	if(ijet2>=0) { *(tree_.jet2p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet2);tree_.jet2PtRank =rank1 }
-	if(ijet3>=0) { *(tree_.jet3p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet3);tree_.jet3PtRank =rank1 }
-	if(ijet4>=0) { *(tree_.jet4p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet4);tree_.jet4PtRank =rank1 }
-
-
+	if(ijet1>=0) { *(tree_.jet1p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet1);tree_.jet1PtRank =rank1; }
+	if(ijet2>=0) { *(tree_.jet2p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet2);tree_.jet2PtRank =rank2; }
+	if(ijet3>=0) { *(tree_.jet3p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet3);tree_.jet3PtRank =rank3; }
+	if(ijet4>=0) { *(tree_.jet4p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet4);tree_.jet4PtRank =rank4; }
+	
 	TLorentzVector sumj1;
 	TLorentzVector sumj2;
 	TLorentzVector dijet;
