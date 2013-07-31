@@ -46,10 +46,10 @@ DoubleHiggsTreeVariables::DoubleHiggsTreeVariables() :
     jet4genDr(0),	
     jet1Pt(0),		
     jet2Pt(0),	
-    jet1PtRank(0),		
-    jet2PtRank(0),
-    jet3PtRank(0),		
-    jet4PtRank(0),		
+    jet1PtRank(-1),		
+    jet2PtRank(-1),
+    jet3PtRank(-1),		
+    jet4PtRank(-1),		
     jet1Eta(999),		
     jet2Eta(999),		
     zepp(999),		
@@ -417,10 +417,10 @@ bool DoubleHiggsAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, T
 	    else if ( PUjetId && ijet4<0 ) {ijet4 = ijet; rank4 =rank;}
 	}
 	
-	if(ijet1>=0) { *(tree_.jet1p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet1);tree_.jet1PtRank =rank1; }
-	if(ijet2>=0) { *(tree_.jet2p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet2);tree_.jet2PtRank =rank2; }
-	if(ijet3>=0) { *(tree_.jet3p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet3);tree_.jet3PtRank =rank3; }
-	if(ijet4>=0) { *(tree_.jet4p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet4);tree_.jet4PtRank =rank4; }
+	if(ijet1>=0) { *(tree_.jet1p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet1); }
+	if(ijet2>=0) { *(tree_.jet2p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet2); }
+	if(ijet3>=0) { *(tree_.jet3p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet3); }
+	if(ijet4>=0) { *(tree_.jet4p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet4); }
 	
 	TLorentzVector sumj1;
 	TLorentzVector sumj2;
@@ -486,6 +486,7 @@ bool DoubleHiggsAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, T
 		tree_.csvMvaBtag1 = l.jet_algoPF1_csvMvaBtag[ijet1];
 		tree_.jetProbBtag1 = l.jet_algoPF1_jetProbBtag[ijet1];
 		tree_.tcheBtag1 = l.jet_algoPF1_tcheBtag[ijet1];
+		tree_.jet1PtRank =rank1;
 	    }
 	    if( ijet2 >= 0 ) {
 		tree_.jet2isMatched = l.jet_algoPF1_genMatched[ijet2];
@@ -501,6 +502,7 @@ bool DoubleHiggsAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, T
 		tree_.csvMvaBtag2 = l.jet_algoPF1_csvMvaBtag[ijet2];
 		tree_.jetProbBtag2 = l.jet_algoPF1_jetProbBtag[ijet2];
 		tree_.tcheBtag2 = l.jet_algoPF1_tcheBtag[ijet2];
+		tree_.jet2PtRank =rank2;
 
 
 	    }
@@ -525,6 +527,7 @@ bool DoubleHiggsAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, T
 		tree_.csvMvaBtag3 = l.jet_algoPF1_csvMvaBtag[ijet3];
 		tree_.jetProbBtag3 = l.jet_algoPF1_jetProbBtag[ijet3];
 		tree_.tcheBtag3 = l.jet_algoPF1_tcheBtag[ijet3];
+		tree_.jet3PtRank =rank3;
 	    }
 
 	    if( ijet4 >= 0 ) {
@@ -533,6 +536,7 @@ bool DoubleHiggsAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, T
 		tree_.jet4genPt     = l.jet_algoPF1_genPt[ijet4];
 		tree_.jet4genDr     = l.jet_algoPF1_genDr[ijet4];
 		tree_.csvBtag4 = l.jet_algoPF1_csvBtag[ijet4];
+		tree_.jet4PtRank =rank4;
 	    }	    
 
 
