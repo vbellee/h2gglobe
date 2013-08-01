@@ -234,7 +234,7 @@ pho_isconv
 # new variables
 pho_pfiso_myneutral01
 pho_pfiso_myneutral02
-pho_pfiso_myneutral03
+## pho_pfiso_myneutral03
 pho_pfiso_myneutral04
 pho_pfiso_myneutral05
 pho_pfiso_myneutral06

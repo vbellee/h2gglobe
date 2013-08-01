@@ -4,7 +4,7 @@ import ROOT
 from sys import argv
 from python.configProducer import *
 from python.lumi import *
-import sys
+import sys, os
 from python.runOptions import *
 
 (options,args)=parser.parse_args()
@@ -12,6 +12,8 @@ if (int(options.nJobs) > 0) and (int(options.jobId) >= int(options.nJobs)):
   sys.exit("Job id's must run from 0 -> %d when splitting into %d jobs"%(int(options.nJobs)-1,int(options.nJobs)))
     
 ROOT.gSystem.Load("../libLoopAll.so");
+
+## ROOT.gSystem.Load(os.path.join(os.path.dirname(os.getcwd()),"libLoopAll.so"))
 
 ROOT.gROOT.SetBatch(1)
 

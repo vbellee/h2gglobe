@@ -40,3 +40,9 @@ dumpFlatTree=1
 puMap=
 puHist=
 puTarget=
+
+## jets
+recomputeBetas=0
+recorrectJets=1
+rerunJetMva=0
+recomputeJetWp=0

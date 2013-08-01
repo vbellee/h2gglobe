@@ -400,7 +400,7 @@ bool DoubleHiggsAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, T
 	std::sort(pt_sorted_jets.begin(),pt_sorted_jets.end(),
 		  ClonesSorter<TLorentzVector,double,std::greater<double> >(l.jet_algoPF1_p4,&TLorentzVector::Pt)); 
 	
-	switchJetIdVertex( l, l.dipho_vtxind[diphoton_id] );
+	//// switchJetIdVertex( l, l.dipho_vtxind[diphoton_id] );
 	
 	/// select fourhighestcsv jets passing loose PU jet Id
 	int ijet1 = -1, rank1 =-1;
@@ -409,12 +409,16 @@ bool DoubleHiggsAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, T
 	int ijet4 = -1, rank4 =-1;
 	for(size_t itjet=0; itjet<sorted_jets.size(); ++itjet ) {
 	    int ijet = sorted_jets[itjet];
+	    jetHandler_->computeWp(ijet,l.dipho_vtxind[diphoton_id]);
+	    int puwp = (*l.jet_algoPF1_cutbased_wp_level_ext)[ijet][l.dipho_vtxind[diphoton_id]];
+	    bool PUjetId = PileupJetIdentifier::passJetId(puwp, PileupJetIdentifier::kLoose);
+
 	    int rank = std::find(pt_sorted_jets.begin(),pt_sorted_jets.end(),ijet)-pt_sorted_jets.begin();
-	    bool PUjetId = PileupJetIdentifier::passJetId(l.jet_algoPF1_simple_wp_level[ijet], PileupJetIdentifier::kLoose);
 	    if ( PUjetId && ijet1<0 ) {ijet1 = ijet;      rank1 =rank;}
 	    else if ( PUjetId && ijet2<0 ) {ijet2 = ijet; rank2 =rank;}
             else if ( PUjetId && ijet3<0 ) {ijet3 = ijet; rank3 =rank;}
 	    else if ( PUjetId && ijet4<0 ) {ijet4 = ijet; rank4 =rank;}
+	    else if ( ijet4>= 0 ) { break; }
 	}
 	
 	if(ijet1>=0) { *(tree_.jet1p4) = *(TLorentzVector*)l.jet_algoPF1_p4->At(ijet1);tree_.jet1PtRank =rank1; }
