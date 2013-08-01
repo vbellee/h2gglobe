@@ -225,29 +225,38 @@ void JetHandler::computeMva(int ijet, int ivtx)
 // ---------------------------------------------------------------------------------------------------------------
 void JetHandler::computeWp(int ijet, int ivtx)
 {
+    if( ivtx >= l_.jet_algoPF1_nvtx ) { return; }
+
     TLorentzVector * p4 = (TLorentzVector*)l_.jet_algoPF1_p4->At(ijet);
 
-    if( (*l_.jet_algoPF1_full_mva_ext)[ijet].size() <= ivtx ) {
-	(*l_.jet_algoPF1_full_mva_ext)[ijet].resize(ivtx+1);
-	(*l_.jet_algoPF1_full_wp_level_ext)[ijet].resize(ivtx+1);
-	(*l_.jet_algoPF1_simple_mva_ext)[ijet].resize(ivtx+1);
-	(*l_.jet_algoPF1_simple_wp_level_ext)[ijet].resize(ivtx+1);
-	(*l_.jet_algoPF1_cutbased_wp_level_ext)[ijet].resize(ivtx+1);
+    //// if( (*l_.jet_algoPF1_full_mva_ext)[ijet].size() <= ivtx ) {
+    //// 	(*l_.jet_algoPF1_full_mva_ext)[ijet].resize(ivtx+1);
+    //// 	(*l_.jet_algoPF1_full_wp_level_ext)[ijet].resize(ivtx+1);
+    //// 	(*l_.jet_algoPF1_simple_mva_ext)[ijet].resize(ivtx+1);
+    //// 	(*l_.jet_algoPF1_simple_wp_level_ext)[ijet].resize(ivtx+1);
+    //// 	(*l_.jet_algoPF1_cutbased_wp_level_ext)[ijet].resize(ivtx+1);
+    //// }
+    
+    if( l_.jet_algoPF1_cutbased_wp_level_ext == 0 ) {
+	l_.jet_algoPF1_cutbased_wp_level_ext = new std::vector<std::vector<int> > (l_.jet_algoPF1_n,std::vector<int>(0));
     }
-    
-    (*l_.jet_algoPF1_full_wp_level_ext)[ijet][ivtx] 
-	= full->computeIDflag( (*l_.jet_algoPF1_full_mva_ext)[ijet][ivtx], (float)p4->Pt(), (float)p4->Eta());
+    if( (*l_.jet_algoPF1_cutbased_wp_level_ext)[ijet].size() <= ivtx ) { 
+	(*l_.jet_algoPF1_cutbased_wp_level_ext)[ijet].resize(ivtx+1); 
+    }
 
-    (*l_.jet_algoPF1_simple_wp_level_ext)[ijet][ivtx] 
-	= simple->computeIDflag( (*l_.jet_algoPF1_simple_mva_ext)[ijet][ivtx], (float)p4->Pt(), (float)p4->Eta());
+    //// (*l_.jet_algoPF1_full_wp_level_ext)[ijet][ivtx] 
+    //// 	= full->computeIDflag( (*l_.jet_algoPF1_full_mva_ext)[ijet][ivtx], (float)p4->Pt(), (float)p4->Eta());
+    //// 
+    //// (*l_.jet_algoPF1_simple_wp_level_ext)[ijet][ivtx] 
+    //// 	= simple->computeIDflag( (*l_.jet_algoPF1_simple_mva_ext)[ijet][ivtx], (float)p4->Pt(), (float)p4->Eta());
     
+
     (*l_.jet_algoPF1_cutbased_wp_level_ext)[ijet][ivtx] 
-	= cutbased->computeCutIDflag( (*l_.jet_algoPF1_betaStarClassic_ext)[ijet][ivtx], 
+	= cutbased->computeCutIDflag( ( ivtx == 0 ? l_.jet_algoPF1_betaStarClassic[ijet] :  (*l_.jet_algoPF1_betaStarClassic_ext)[ijet][ivtx] ), 
 				      l_.jet_algoPF1_dR2Mean[ijet], 
 				      l_.vtx_std_n,
 				      p4->Pt(), p4->Eta() );
-    //////// if( p4->Pt() > 20. ) { 
-    //////// 	std::cout << "JetHandler::computeWp " << ijet << " " << ivtx << " " << (*l_.jet_algoPF1_betaStarClassic_ext)[ijet][ivtx] << " " << l_.jet_algoPF1_dR2Mean[ijet] << " " << l_.vtx_std_n << " " << p4->Eta() << " " << PileupJetIdentifier::passJetId((*l_.jet_algoPF1_cutbased_wp_level_ext)[ijet][ivtx], PileupJetIdentifier::kLoose) << std::endl; 
+
     //////// }
 }
 
