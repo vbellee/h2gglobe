@@ -4,13 +4,13 @@
 #include "TFile.h"
 #include "TLorentzVector.h"
 #include <algorithm>
-
+#include "TString.h"
 
 
 void DiHAnalysis(){
   
   //Open a file, save the ntuple and close the file
-  TFile *in_file = TFile::Open("histograms_diH_studiesBtagging.root");
+  TFile *in_file = TFile::Open("histograms_diH_studiesBtagging6.root");
   
  
   TTree* my_tuple = (TTree*) in_file->GetObjectChecked("doubleHiggsAnalysis/gghh_m125_8TeV",
@@ -36,15 +36,16 @@ void DiHAnalysis(){
 
   //Fix the csv Cut (0.244, 0.679, 0.898)
   float csvCut ;
-  csvCut = 0;
+  csvCut = 0.0;
 
   //Smallest Cut
   float csvCut1 ;
-  csvCut1 = 0.244;
+  csvCut1 = 0.0;
   //Biggest Cut
   float csvCut2 ;
-  csvCut2 = 0.244;
+  csvCut2 = 0.0;
 
+  char Conditions = "(nJets)<=3";
 
   //Create the Histograms
   //Have to set the appropriate boundaries
@@ -124,8 +125,23 @@ void DiHAnalysis(){
   TH1F* hjetPt=new TH1F("jetPt","Jet Momentum;Pt;",
 			 50,//Number of bins
 			 0,//Lower X Boundary
-			 500);//Upper X Boundary
+			 160);//Upper X Boundary
   hjetPt->SetLineColor(kGreen-6);
+  hjetPt->Sumw2();
+
+  TH1F* hjetPtBtag=new TH1F("jetPtBtag","Jet Momentum after B-tagging;Pt;",
+			 50,//Number of bins
+			 0,//Lower X Boundary
+			 160);//Upper X Boundary
+  hjetPtBtag->SetFillColor(kGreen-6);
+  hjetPtBtag->Sumw2();
+
+  TH1F* hdivisionbis=new TH1F("hdivisionbis","Efficiency of the b-cut;Pt;",
+			 50,//Number of bins
+			 0,//Lower X Boundary
+			 160);//Upper X Boundary
+  hdivisionbis->SetFillColor(kGreen-6);
+  hdivisionbis->Sumw2();
 
   TH1F* hjetZHPt=new TH1F("jetPt","Jet Momentum;Pt;",
 			 50,//Number of bins
@@ -263,11 +279,47 @@ void DiHAnalysis(){
 			 300);//Upper X Boundary
   hmj1j2->SetLineColor(kGreen-6);
 
+  TH1F* hdiphoMHH=new TH1F("diphoMHH","Di-photon Mass HH;Mass;",
+			 100,//Number of bins
+			 100,//Lower X Boundary
+			 150);//Upper X Boundary
+  hdiphoMHH->SetFillColor(kViolet);
+
+  TH1F* hdiphoMZH=new TH1F("diphoMZH","Di-photon Mass ZH;Mass;",
+			 100,//Number of bins
+			 100,//Lower X Boundary
+			 150);//Upper X Boundary
+  hdiphoMZH->SetFillColor(kGreen);
+
+  TH1F* hdiphoMWH=new TH1F("diphoMWH","Di-photon Mass WH;Mass;",
+			 100,//Number of bins
+			 100,//Lower X Boundary
+			 150);//Upper X Boundary
+  hdiphoMWH->SetFillColor(kRed);
+
+  TH1F* hdiphoMGGH=new TH1F("diphoMGGH","Di-photon Mass GGH;Mass;",
+			 100,//Number of bins
+			 100,//Lower X Boundary
+			 150);//Upper X Boundary
+  hdiphoMGGH->SetFillColor(kBlue-6);
+
+  TH1F* hdiphoMGGHCuts=new TH1F("diphoMGGHCuts","Di-photon Mass GGH;Mass;",
+			 100,//Number of bins
+			 100,//Lower X Boundary
+			 150);//Upper X Boundary
+  hdiphoMGGHCuts->SetFillColor(kBlue-6);
+
+  TH1F* hdiphoMTTH=new TH1F("diphoMTTH","Di-photon Mass TTH;Mass;",
+			 100,//Number of bins
+			 100,//Lower X Boundary
+			 150);//Upper X Boundary
+  hdiphoMTTH->SetFillColor(kOrange);
+
   TH1F* hmj1j2reco=new TH1F("mj1mj2GGHH","Di-jet Reconstructed MassGGHH;Mass;",
 			 60,//Number of bins
 			 0,//Lower X Boundary
 			 300);//Upper X Boundary
-  hmj1j2reco->SetLineColor(kRed-6);
+  hmj1j2reco->SetFillColor(kViolet);
 
   TH1F* hmj1j2ZH=new TH1F("mj1mj2ZH","Di-jetZH Mass;Mass;",
 			 60,//Number of bins
@@ -416,40 +468,216 @@ void DiHAnalysis(){
   */
 
   TH1F* hDeltaRHH=new TH1F("DeltaRHH","Delta R;Delta R;",
-			 100,//Number of bins
+			 50,//Number of bins
 			 0,//Lower X Boundary
-			 10);//Upper X Boundary
+			 3);//Upper X Boundary
   hDeltaRHH->SetLineColor(kGreen-6);
 
   TH1F* hDeltaRZH=new TH1F("DeltaRZH","DeltaR;DeltaR;",
-			 100,//Number of bins
+			 50,//Number of bins
 			 0,//Lower X Boundary
-			 10);//Upper X Boundary
+			 3);//Upper X Boundary
   hDeltaRZH->SetLineColor(kGreen);
 
   TH1F* hDeltaRWH=new TH1F("DeltaRWH","DeltaR;DeltaR;",
-			 100,//Number of bins
+			 50,//Number of bins
 			 0,//Lower X Boundary
-			 10);//Upper X Boundary
+			 3);//Upper X Boundary
   hDeltaRWH->SetLineColor(kRed);
 
   TH1F* hDeltaRGGH=new TH1F("DeltaRGGH","DeltaR;DeltaR;",
-			 100,//Number of bins
+			 50,//Number of bins
 			 0,//Lower X Boundary
-			 10);//Upper X Boundary
+			 3);//Upper X Boundary
   hDeltaRGGH->SetLineColor(kBlue-6);
 
   TH1F* hDeltaRVBF=new TH1F("DeltaRVBF","DeltaR;DeltaR;",
-			 100,//Number of bins
+			 50,//Number of bins
 			 0,//Lower X Boundary
-			 10);//Upper X Boundary
+			 3);//Upper X Boundary
   hDeltaRVBF->SetLineColor(kBlue);
 
   TH1F* hDeltaRTTH=new TH1F("DeltaRTTH","DeltaR;DeltaR;",
-			 100,//Number of bins
+			 11,//Number of bins
 			 0,//Lower X Boundary
 			 10);//Upper X Boundary
-  hDeltaRTTH->SetLineColor(kBlue);
+  hDeltaRTTH->SetLineColor(kOrange);
+
+ TH1F* hnJetsHH=new TH1F("nJetsHH","nJets HH;nJets;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary 
+  hnJetsHH->SetLineColor(kViolet); 
+
+  TH1F* hnJetsZH=new TH1F("nJetsZH","nJets ZH;nJets;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hnJetsZH->SetLineColor(kGreen); 
+
+  TH1F* hnJetsWH=new TH1F("nJetsWH","nJets WH;nJets;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hnJetsWH->SetLineColor(kRed);
+
+  TH1F* hnJetsGGH=new TH1F("nJetsGGH","nJets GGH;nJets;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hnJetsGGH->SetLineColor(kBlue-6);
+
+
+  TH1F* hnJetsTTH=new TH1F("nJetsTTH","nJets TTH;nJets;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hnJetsTTH->SetLineColor(kOrange);
+
+  TH1F* hjet1PtRankHH=new TH1F("Jet1PtRankHH","Jet 1 Pt Rank HH;Pt Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet1PtRankHH->SetFillColor(kViolet);
+
+  TH1F* hjet2PtRankHH=new TH1F("Jet2PtRankHH","Jet 2 Pt Rank HH;Pt Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet2PtRankHH->SetFillColor(kViolet);
+
+  TH1F* hjet3PtRankHH=new TH1F("Jet3PtRankHH","Jet 3 Pt Rank HH;Pt Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet3PtRankHH->SetFillColor(kViolet);
+
+  TH1F* hjet4PtRankHH=new TH1F("Jet4PtRankHH","Jet 4 Pt Rank HH;Pt Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet4PtRankHH->SetFillColor(kViolet);
+
+  TH1F* hjet1csvRankHH=new TH1F("Jet1csvRankHH","Jet 1 csv Rank HH;Csv Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet1csvRankHH->SetFillColor(kViolet);
+
+  TH1F* hjet2csvRankHH=new TH1F("Jet2csvRankHH","Jet 2 csv Rank HH;Csv Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet2csvRankHH->SetFillColor(kViolet);
+
+  TH1F* hjet3csvRankHH=new TH1F("Jet3csvRankHH","Jet 3 csv Rank HH;Csv Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet3csvRankHH->SetFillColor(kViolet);
+
+  TH1F* hjet4csvRankHH=new TH1F("Jet4csvRankHH","Jet 4 csv Rank HH;Csv Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet4csvRankHH->SetFillColor(kViolet);
+
+
+  TH1F* hjet1PtRankZH=new TH1F("Jet1PtRankZH","Jet 1 Pt Rank ZH;Pt Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet1PtRankZH->SetLineColor(kGreen);
+
+  TH1F* hjet2PtRankZH=new TH1F("Jet2PtRankZH","Jet 2 Pt Rank ZH;Pt Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet2PtRankZH->SetLineColor(kGreen);
+
+  TH1F* hjet3PtRankZH=new TH1F("Jet3PtRankZH","Jet 3 Pt Rank ZH;Pt Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet3PtRankZH->SetLineColor(kGreen);
+
+  TH1F* hjet4PtRankZH=new TH1F("Jet4PtRankZH","Jet 4 Pt Rank ZH;Pt Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet4PtRankZH->SetLineColor(kGreen);
+
+  TH1F* hjet1PtRankWH=new TH1F("Jet1PtRankWH","Jet 1 Pt Rank WH;Pt Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet1PtRankWH->SetLineColor(kRed);
+
+  TH1F* hjet2PtRankWH=new TH1F("Jet2PtRankWH","Jet 2 Pt Rank WH;Pt Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet2PtRankWH->SetLineColor(kRed);
+
+  TH1F* hjet3PtRankWH=new TH1F("Jet3PtRankWH","Jet 3 Pt Rank WH;Pt Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet3PtRankWH->SetLineColor(kRed);
+
+  TH1F* hjet4PtRankWH=new TH1F("Jet4PtRankWH","Jet 4 Pt Rank WH;Pt Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet4PtRankWH->SetLineColor(kRed);
+
+  TH1F* hjet1PtRankGGH=new TH1F("Jet1PtRankGGH","Jet 1 Pt Rank GGH;Pt Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet1PtRankGGH->SetLineColor(kBlue-6);
+
+  TH1F* hjet2PtRankGGH=new TH1F("Jet2PtRankGGH","Jet 2 Pt Rank GGH;Pt Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet2PtRankGGH->SetLineColor(kBlue-6);
+
+  TH1F* hjet3PtRankGGH=new TH1F("Jet3PtRankGGH","Jet 3 Pt Rank GGH;Pt Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet3PtRankGGH->SetLineColor(kBlue-6);
+
+  TH1F* hjet4PtRankGGH=new TH1F("Jet4PtRankGGH","Jet 4 Pt Rank GGH;Pt Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet4PtRankGGH->SetLineColor(kBlue-6);
+
+  TH1F* hjet1PtRankTTH=new TH1F("Jet1PtRankTTH","Jet 1 Pt Rank TTH;Pt Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet1PtRankTTH->SetLineColor(kOrange);
+
+  TH1F* hjet2PtRankTTH=new TH1F("Jet2PtRankTTH","Jet 2 Pt Rank TTH;Pt Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet2PtRankTTH->SetLineColor(kOrange);
+
+  TH1F* hjet3PtRankTTH=new TH1F("Jet3PtRankTTH","Jet 3 Pt Rank TTH;Pt Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet3PtRankTTH->SetLineColor(kOrange);
+
+  TH1F* hjet4PtRankTTH=new TH1F("Jet4PtRankTTH","Jet 4 Pt Rank TTH;Pt Rank;",
+			 10,//Number of bins
+			 0,//Lower X Boundary
+			 10);//Upper X Boundary
+  hjet4PtRankTTH->SetLineColor(kOrange);
 
   //Create the fit functions to be modified with the Breit Wigner function
   //gdiphoM = new TF1("gdiphoM","2*sqrt(2)*[0]*[1]*sqrt([0]*[0]*([0]*[0]+[1]*[1]))/(3.1415*sqrt([0]*[0]+sqrt([0]*[0]*([0]*[0]+[1]*[1]))))/((x*x-[0]*[0])*(x*x-[0]*[0])+[0]*[0]*[1]*[1])",90,160);
@@ -464,9 +692,9 @@ void DiHAnalysis(){
 
   float pho1pt, pho2pt, pho1Eta, pho2Eta, pho1Phi, pho2Phi, diphoM, diphoEta, diphopt,jet1Eta,jet2Eta, dijetEta, jet1Pt, jet2Pt,jet1genPt, jet2genPt, mj1j2, numJet1Matched, numJet2Matched, numDijetMatched, csvBtag1, csvBtag2, csvBtag3, csvMvaBtag1, csvMvaBtag2, csvMvaBtag3, jetProbBtag1, jetProbBtag2, jetProbBtag3, tcheBtag1, tcheBtag2, tcheBtag3, weight;
 
-  bool jet1isMatched, jet2isMatched, jet1isBMatched, jet2isBMatched;
+  bool jet1isMatched, jet2isMatched, jet1isBMatched, jet2isBMatched, jet3isBMatched, jet4isBMatched;
 
-  int jet3;
+  int jet3, nJets, jet1PtRank, jet2PtRank, jet3PtRank, jet4PtRank;
 
   numJet1Matched = 0;
   numJet2Matched = 0;
@@ -497,6 +725,10 @@ void DiHAnalysis(){
   my_tuple->SetBranchAddress("jet3",&jet3);
   my_tuple->SetBranchAddress("jet1isMatched",&jet1isMatched);
   my_tuple->SetBranchAddress("jet2isMatched",&jet2isMatched);
+  my_tuple->SetBranchAddress("jet1isBMatched",&jet1isBMatched);
+  my_tuple->SetBranchAddress("jet2isBMatched",&jet2isBMatched);
+  my_tuple->SetBranchAddress("jet3isBMatched",&jet3isBMatched);
+  my_tuple->SetBranchAddress("jet4isBMatched",&jet4isBMatched);
   my_tuple->SetBranchAddress("csvBtag1",&csvBtag1); 
   my_tuple->SetBranchAddress("csvBtag2",&csvBtag2); 
   my_tuple->SetBranchAddress("csvBtag3",&csvBtag3);  
@@ -510,6 +742,11 @@ void DiHAnalysis(){
   my_tuple->SetBranchAddress("tcheBtag2",&tcheBtag2); 
   my_tuple->SetBranchAddress("tcheBtag3",&tcheBtag3);
   my_tuple->SetBranchAddress("weight",&weight);
+  my_tuple->SetBranchAddress("nJets",&nJets);
+  my_tuple->SetBranchAddress("jet1PtRank",&jet1PtRank);
+  my_tuple->SetBranchAddress("jet2PtRank",&jet2PtRank);
+  my_tuple->SetBranchAddress("jet3PtRank",&jet3PtRank);
+  my_tuple->SetBranchAddress("jet4PtRank",&jet4PtRank);
 
   my_tupleZH->SetBranchAddress("pho1pt",&pho1pt);
   my_tupleZH->SetBranchAddress("pho2pt",&pho2pt);
@@ -549,6 +786,11 @@ void DiHAnalysis(){
   my_tupleZH->SetBranchAddress("tcheBtag2",&tcheBtag2); 
   my_tupleZH->SetBranchAddress("tcheBtag3",&tcheBtag3);
   my_tupleZH->SetBranchAddress("weight",&weight);
+  my_tupleZH->SetBranchAddress("nJets",&nJets);
+  my_tupleZH->SetBranchAddress("jet1PtRank",&jet1PtRank);
+  my_tupleZH->SetBranchAddress("jet2PtRank",&jet2PtRank);
+  my_tupleZH->SetBranchAddress("jet3PtRank",&jet3PtRank);
+  my_tupleZH->SetBranchAddress("jet4PtRank",&jet4PtRank);
 
   my_tupleWH->SetBranchAddress("pho1pt",&pho1pt);
   my_tupleWH->SetBranchAddress("pho2pt",&pho2pt);
@@ -586,6 +828,11 @@ void DiHAnalysis(){
   my_tupleWH->SetBranchAddress("tcheBtag2",&tcheBtag2); 
   my_tupleWH->SetBranchAddress("tcheBtag3",&tcheBtag3);
   my_tupleWH->SetBranchAddress("weight",&weight);
+  my_tupleWH->SetBranchAddress("nJets",&nJets);
+  my_tupleWH->SetBranchAddress("jet1PtRank",&jet1PtRank);
+  my_tupleWH->SetBranchAddress("jet2PtRank",&jet2PtRank);
+  my_tupleWH->SetBranchAddress("jet3PtRank",&jet3PtRank);
+  my_tupleWH->SetBranchAddress("jet4PtRank",&jet4PtRank);
 
   my_tupleGGH->SetBranchAddress("pho1pt",&pho1pt);
   my_tupleGGH->SetBranchAddress("pho2pt",&pho2pt);
@@ -623,6 +870,11 @@ void DiHAnalysis(){
   my_tupleGGH->SetBranchAddress("tcheBtag2",&tcheBtag2); 
   my_tupleGGH->SetBranchAddress("tcheBtag3",&tcheBtag3);
   my_tupleGGH->SetBranchAddress("weight",&weight);
+  my_tupleGGH->SetBranchAddress("nJets",&nJets);
+  my_tupleGGH->SetBranchAddress("jet1PtRank",&jet1PtRank);
+  my_tupleGGH->SetBranchAddress("jet2PtRank",&jet2PtRank);
+  my_tupleGGH->SetBranchAddress("jet3PtRank",&jet3PtRank);
+  my_tupleGGH->SetBranchAddress("jet4PtRank",&jet4PtRank);
 
   my_tupleVBF->SetBranchAddress("pho1pt",&pho1pt);
   my_tupleVBF->SetBranchAddress("pho2pt",&pho2pt);
@@ -660,6 +912,7 @@ void DiHAnalysis(){
   my_tupleVBF->SetBranchAddress("tcheBtag2",&tcheBtag2); 
   my_tupleVBF->SetBranchAddress("tcheBtag3",&tcheBtag3);
   my_tupleVBF->SetBranchAddress("weight",&weight);
+  my_tupleVBF->SetBranchAddress("nJets",&nJets);
 
   my_tupleTTH->SetBranchAddress("pho1pt",&pho1pt);
   my_tupleTTH->SetBranchAddress("pho2pt",&pho2pt);
@@ -696,7 +949,12 @@ void DiHAnalysis(){
   my_tupleTTH->SetBranchAddress("tcheBtag1",&tcheBtag1); 
   my_tupleTTH->SetBranchAddress("tcheBtag2",&tcheBtag2); 
   my_tupleTTH->SetBranchAddress("tcheBtag3",&tcheBtag3);
-  my_tupleTTH>SetBranchAddress("weight",&weight);
+  my_tupleTTH->SetBranchAddress("weight",&weight);
+  my_tupleTTH->SetBranchAddress("nJets",&nJets);
+  my_tupleTTH->SetBranchAddress("jet1PtRank",&jet1PtRank);
+  my_tupleTTH->SetBranchAddress("jet2PtRank",&jet2PtRank);
+  my_tupleTTH->SetBranchAddress("jet3PtRank",&jet3PtRank);
+  my_tupleTTH->SetBranchAddress("jet4PtRank",&jet4PtRank);
   
   for (int irow=0;irow<my_tupleZH->GetEntries();++irow){
     my_tupleZH->GetEntry(irow);
@@ -717,7 +975,8 @@ void DiHAnalysis(){
 
     if ((pho1pt/diphoM) > (1/2) &&
 	(pho2pt/diphoM) > (25/120)&&
-	(jet3) < 0 &&
+//	(jet3) < 0 &&
+//	(nJets)<=3 &&
 	(pho1Eta) < 2.5 &&
 	(pho1Eta) > -2.5 &&
 	(pho2Eta) < 2.5 &&
@@ -728,6 +987,8 @@ void DiHAnalysis(){
 	(jet1Eta) > -2.1 &&
 	(jet2Eta) < 2.1 &&
 	(jet2Eta) > -2.1
+//	jetSumrecop4.M()> 108 &&
+//	jetSumrecop4.M()< 138
 	
 	)
     {	hdijetZHpt->Fill(jet1Pt+jet2Pt);
@@ -750,6 +1011,9 @@ void DiHAnalysis(){
 		) continue;
 	hmj1j2ZH->Fill(jetSumrecop4.M(),weight);
         hDeltaRZH->Fill(sqrt(asin(sin(pho2Phi-pho1Phi))*asin(sin(pho2Phi-pho1Phi))+(pho2Eta-pho1Eta)*(pho2Eta-pho1Eta)));
+	hdiphoMZH->Fill(diphoM,weight);
+	hnJetsZH->Fill(nJets,weight);
+
 	
 	if ((jet1isBMatched)==1 &&
 	    (jet2isBMatched)==1)
@@ -780,7 +1044,8 @@ void DiHAnalysis(){
 
     if ((pho1pt/diphoM) > (1/2) &&
 	(pho2pt/diphoM) > (25/120)&&
-	(jet3) < 0 &&
+//	(jet3) < 0 &&
+//	(nJets)<=3 &&      
 	(pho1Eta) < 2.5 &&
 	(pho1Eta) > -2.5 &&
 	(pho2Eta) < 2.5 &&
@@ -791,6 +1056,8 @@ void DiHAnalysis(){
 	(jet1Eta) > -2.1 &&
 	(jet2Eta) < 2.1 &&
 	(jet2Eta) > -2.1
+//	jetSumrecop4.M()> 108 &&
+//	jetSumrecop4.M()< 138
 	
 	)
       { //Remplissage des histogrammes
@@ -803,6 +1070,8 @@ void DiHAnalysis(){
 		) continue;
 	hmj1j2WH->Fill(jetSumrecop4.M(),weight);
         hDeltaRWH->Fill(sqrt(asin(sin(pho2Phi-pho1Phi))*asin(sin(pho2Phi-pho1Phi))+(pho2Eta-pho1Eta)*(pho2Eta-pho1Eta)));
+	hdiphoMWH->Fill(diphoM,weight);
+	hnJetsWH->Fill(nJets,weight);
 
     }
 
@@ -828,7 +1097,8 @@ void DiHAnalysis(){
 
     if ((pho1pt/diphoM) > (1/2) &&
 	(pho2pt/diphoM) > (25/120)&&
-	(jet3) < 0 &&
+//	(jet3) < 0 &&
+//	(nJets)<=3 &&
 	(pho1Eta) < 2.5 &&
 	(pho1Eta) > -2.5 &&
 	(pho2Eta) < 2.5 &&
@@ -838,10 +1108,13 @@ void DiHAnalysis(){
 	(jet1Eta) < 2.1 &&
 	(jet1Eta) > -2.1 &&
 	(jet2Eta) < 2.1 &&
-	(jet2Eta) > -2.1
+	(jet2Eta) > -2.1 
+//	jetSumrecop4.M()> 108 &&
+//	jetSumrecop4.M()< 138
 	
 	)
       { hmj1j2GGHCuts->Fill(jetSumrecop4.M(),weight);
+	hdiphoMGGHCuts->Fill(diphoM,weight);
 
         //Remplissage des histogrammes
 	float csvMin;
@@ -853,7 +1126,12 @@ void DiHAnalysis(){
 		) continue;
 	hmj1j2GGH->Fill(jetSumrecop4.M(),weight);
         hDeltaRGGH->Fill(sqrt(asin(sin(pho2Phi-pho1Phi))*asin(sin(pho2Phi-pho1Phi))+(pho2Eta-pho1Eta)*(pho2Eta-pho1Eta)));
-
+	hdiphoMGGH->Fill(diphoM,weight);
+	hnJetsGGH->Fill(nJets,weight);
+	hjet1PtRankGGH->Fill(jet1PtRank);
+	hjet2PtRankGGH->Fill(jet2PtRank);
+	hjet3PtRankGGH->Fill(jet3PtRank);
+	hjet4PtRankGGH->Fill(jet4PtRank);
     }
 
   }
@@ -879,7 +1157,7 @@ void DiHAnalysis(){
 
     if ((pho1pt/diphoM) > (1/2) &&
 	(pho2pt/diphoM) > (25/120)&&
-	(jet3) < 0 &&
+//	(jet3) < 0 &&
 	(pho1Eta) < 2.5 &&
 	(pho1Eta) > -2.5 &&
 	(pho2Eta) < 2.5 &&
@@ -890,7 +1168,7 @@ void DiHAnalysis(){
 	(jet1Eta) > -2.1 &&
 	(jet2Eta) < 2.1 &&
 	(jet2Eta) > -2.1
-	
+	       
 	)
       {
 
@@ -929,7 +1207,8 @@ void DiHAnalysis(){
 
     if ((pho1pt/diphoM) > (1/2) &&
 	(pho2pt/diphoM) > (25/120)&&
-	(jet3) < 0 &&
+//	(jet3) < 0 &&
+//	(nJets)<=3 &&
 	(pho1Eta) < 2.5 &&
 	(pho1Eta) > -2.5 &&
 	(pho2Eta) < 2.5 &&
@@ -940,6 +1219,8 @@ void DiHAnalysis(){
 	(jet1Eta) > -2.1 &&
 	(jet2Eta) < 2.1 &&
 	(jet2Eta) > -2.1
+//	jetSumrecop4.M()> 108 &&
+//	jetSumrecop4.M()< 138
 	
 	)
       {
@@ -954,6 +1235,12 @@ void DiHAnalysis(){
 		) continue;
 	hmj1j2TTH->Fill(jetSumrecop4.M(),weight);
         hDeltaRTTH->Fill(sqrt(asin(sin(pho2Phi-pho1Phi))*asin(sin(pho2Phi-pho1Phi))+(pho2Eta-pho1Eta)*(pho2Eta-pho1Eta)));
+	hdiphoMTTH->Fill(diphoM,weight);
+	hnJetsTTH->Fill(nJets,weight);
+	hjet1PtRankTTH->Fill(jet1PtRank);
+	hjet2PtRankTTH->Fill(jet2PtRank);
+	hjet3PtRankTTH->Fill(jet3PtRank);
+	hjet4PtRankTTH->Fill(jet4PtRank);
     }
 
   }
@@ -998,7 +1285,8 @@ void DiHAnalysis(){
 	//(jet2Pt-jet2genPt)<0 &&
 	(pho1pt/diphoM) > (1/2) &&
 	(pho2pt/diphoM) > (25/120)&&
-	(jet3) < 0 &&
+//	(jet3) < 0 &&
+//	(nJets)<=3 &&
 	(pho1Eta) < 2.5 &&
 	(pho1Eta) > -2.5 &&
 	(pho2Eta) < 2.5 &&
@@ -1009,6 +1297,9 @@ void DiHAnalysis(){
 	(jet1Eta) > -2.1 &&
 	(jet2Eta) < 2.1 &&
 	(jet2Eta) > -2.1
+//	jetSumrecop4.M()> 108 &&
+//	jetSumrecop4.M()< 138
+	
 	
 	)
 
@@ -1021,7 +1312,7 @@ void DiHAnalysis(){
 	hpho1Eta->Fill(pho1Eta);
 	hpho2Eta->Fill(pho2Eta);
 	hdiphoEta->Fill(diphoEta);
-	hdiphoM->Fill(diphoM);
+	hdiphoM->Fill(diphoM,weight);
 	hdijetpt->Fill(jet1Pt+jet2Pt);
 	hjet1Pt->Fill(jet1Pt);
 	hjet2Pt->Fill(jet2Pt);
@@ -1031,14 +1322,14 @@ void DiHAnalysis(){
 	hjetPt->Fill(jet2Pt);	
 
 	if ((csvBtag1)>csvCut)
-	{	hjet1PtBtag->Fill(jet1Pt);
-		hdivisionbis1->Fill(jet1Pt);
+	{	hjetPtBtag->Fill(jet1Pt);
+		hdivisionbis->Fill(jet1Pt);
 	}
 
 
 	if ((csvBtag2)>csvCut)
-	{	hjet2PtBtag->Fill(jet2Pt);
-		hdivisionbis2->Fill(jet2Pt);
+	{	hjetPtBtag->Fill(jet2Pt);
+		hdivisionbis->Fill(jet2Pt);
 	}
 
 	float csvMin;
@@ -1059,6 +1350,20 @@ void DiHAnalysis(){
 	hdijetEta->Fill(dijetEta);
 	hmj1j2->Fill(mj1j2,weight);
 	hmj1j2reco->Fill(jetSumrecop4.M(),weight);
+	hdiphoMHH->Fill(diphoM,weight);
+	hnJetsHH->Fill(nJets,weight);
+	if ((jet1isBMatched)==1){
+	hjet1PtRankHH->Fill(jet1PtRank);
+	}
+	if ((jet2isBMatched)==1){
+	hjet2PtRankHH->Fill(jet2PtRank);
+	}
+	if ((jet3isBMatched)==1){
+	hjet3PtRankHH->Fill(jet3PtRank);
+	}
+	if ((jet4isBMatched)==1){
+	hjet4PtRankHH->Fill(jet4PtRank);
+	}
         hDeltaRHH->Fill(sqrt(asin(sin(pho2Phi-pho1Phi))*asin(sin(pho2Phi-pho1Phi))+(pho2Eta-pho1Eta)*(pho2Eta-pho1Eta)));
 	hjet3->Fill(jet3);
 	hcsvBtag1->Fill(csvBtag1);
@@ -1074,6 +1379,58 @@ void DiHAnalysis(){
 	htcheBtag2->Fill(tcheBtag2);
 	htcheBtag3->Fill(tcheBtag3);
 	
+	if (jet1PtRank == 0 && (jet1isBMatched)==1){
+		hjet1csvRankHH->Fill(0);
+	}
+
+	if (jet1PtRank == 1 && (jet1isBMatched)==1){
+		hjet2csvRankHH->Fill(0);
+	}
+	if (jet1PtRank == 2 && (jet1isBMatched)==1){
+		hjet3csvRankHH->Fill(0);
+	}
+	if (jet1PtRank == 3 && (jet1isBMatched)==1){
+		hjet4csvRankHH->Fill(0);
+	}
+	if (jet2PtRank == 0 && (jet2isBMatched)==1){
+		hjet1csvRankHH->Fill(1);
+	}
+
+	if (jet2PtRank == 1 && (jet2isBMatched)==1){
+		hjet2csvRankHH->Fill(1);
+	}
+	if (jet2PtRank == 2 && (jet2isBMatched)==1){
+		hjet3csvRankHH->Fill(1);
+	}
+	if (jet2PtRank == 3 && (jet2isBMatched)==1){
+		hjet4csvRankHH->Fill(1);
+	}
+	if (jet3PtRank == 0 && (jet3isBMatched)==1){
+		hjet1csvRankHH->Fill(2);
+	}
+
+	if (jet3PtRank == 1 && (jet3isBMatched)==1){
+		hjet2csvRankHH->Fill(2);
+	}
+	if (jet3PtRank == 2 && (jet3isBMatched)==1){
+		hjet3csvRankHH->Fill(2);
+	}
+	if (jet3PtRank == 3 && (jet3isBMatched)==1){
+		hjet4csvRankHH->Fill(2);
+	}
+	if (jet4PtRank == 0 && (jet4isBMatched)==1){
+		hjet1csvRankHH->Fill(3);
+	}
+
+	if (jet4PtRank == 1 && (jet4isBMatched)==1){
+		hjet2csvRankHH->Fill(3);
+	}
+	if (jet4PtRank == 2 && (jet4isBMatched)==1){
+		hjet3csvRankHH->Fill(3);
+	}
+	if (jet4PtRank == 3 && (jet4isBMatched)==1){
+		hjet4csvRankHH->Fill(3);
+	}
 	/*
 	//Count the number of matched jets
 
@@ -1206,22 +1563,43 @@ void DiHAnalysis(){
    float NormalisationK ;
    NormalisationK = (hdiphopt->GetEntries())/(hdiphoZHpt->GetEntries());
    hdiphoZHpt->Scale(NormalisationK);
-  cComparePt->Divide(2,2);
+  cComparePt->Divide(2);
+// cComparePt->cd(1);
+//  hdiphopt->Draw();
+//  hdiphoZHpt->Draw("same");
+
   cComparePt->cd(1);
-  hdiphopt->Draw();
-  hdiphoZHpt->Draw("same");
-  //cComparePt->cd(2);
-  //hjetZHPt->Scale(NormalisationK);
-  //hjetZHPt->Draw();
-  //hjetPt->Draw("same");
-  cComparePt->cd(3);
   hpho1ZHpt->Scale(NormalisationK);
   hpho1ZHpt->Draw();
   hpho1pt->Draw("same");
-  cComparePt->cd(4);
+
+ TLegend *legpho1 = new TLegend(0.5604027,0.6384615,0.8892617,0.8916084,NULL,"brNDC");
+//  leg->SetTextFont(62);
+  legpho1->SetLineColor(1);
+  legpho1->SetLineStyle(1);
+  legpho1->SetLineWidth(1);
+  legpho1->SetFillColor(0);
+  legpho1->SetFillStyle(1001);
+  legpho1->AddEntry(hpho1ZHpt,"ZH", "l");
+  legpho1->AddEntry(hpho1pt,"HH", "l");
+  legpho1->Draw();
+
+
+  cComparePt->cd(2);
   hpho2ZHpt->Scale(NormalisationK);
   hpho2pt->Draw();
   hpho2ZHpt->Draw("same");
+
+ TLegend *legpho2 = new TLegend(0.5604027,0.6384615,0.8892617,0.8916084,NULL,"brNDC");
+//  leg->SetTextFont(62);
+  legpho2->SetLineColor(1);
+  legpho2->SetLineStyle(1);
+  legpho2->SetLineWidth(1);
+  legpho2->SetFillColor(0);
+  legpho2->SetFillStyle(1001);
+  legpho2->AddEntry(hpho2ZHpt,"ZH", "l");
+  legpho2->AddEntry(hpho2pt,"HH", "l");
+  legpho2->Draw();
 
   TCanvas* cMassJet3 = new TCanvas("cMassJet3","Mass and Jet3",100,100,800,800);
   cMassJet3->Divide(2,2);
@@ -1236,11 +1614,11 @@ void DiHAnalysis(){
   cMassJet3->cd(4);
   hcsvBtag2->Draw();
 
-  TCanvas* cPtJet = new TCanvas("cPtJet","DiJet Pt before and after Btagging",100,100,1200,800);
-  cPtJet->Divide(3,2);
+  TCanvas* cPtJet = new TCanvas("cPtJet","Efficiency after b-cut",100,100,1200,800);
+/*  cPtJet->Divide(3,2);
   cPtJet->cd(1);
-  hjet1recoPt->Draw();
-  hjet1Pt->Draw("same");
+  //hjet1recoPt->Draw();
+  hjet1Pt->Draw();
   cPtJet->cd(2); 
   hjet1PtBtag->Draw();
   cPtJet->cd(3);
@@ -1248,22 +1626,22 @@ void DiHAnalysis(){
   hdivisionbis1->Draw();
   cPtJet->cd(4);
   hjet2Pt->Draw();
-  hjet2recoPt->Draw("same");
+  //hjet2recoPt->Draw("same");
   cPtJet->cd(5); 
   hjet2PtBtag->Draw();
   cPtJet->cd(6);
   hdivisionbis2->Divide(hjet2Pt);
   hdivisionbis2->Draw();
+*/
+  TH1F*ratio = hdivisionbis-> Clone();
+  ratio-> Reset();
+  ratio-> Divide( hdivisionbis, hjetPt ,1 ,1 ,"B");
+  ratio-> SetFillColor(kGreen-6);
+  ratio-> Draw("e");
 
   TCanvas* cMassJet = new TCanvas("cMassJet","Mass",100,100,800,800);
-  cMassJet->Divide(2,2);
-  cMassJet->cd(1);
-  hmj1j2GGH->Draw();
-  cMassJet->cd(2);
-  hmj1j2->Draw();
-  hmj1j2reco->Draw("same");
-  cMassJet->cd(3);
-  THStack *hs = new THStack("hs","three plots");
+
+  THStack *hs = new THStack("hs","Di-jet Mass");
 
 //Rescale GGH
    float NormalisationConst ;
@@ -1275,19 +1653,69 @@ void DiHAnalysis(){
    hs->Add(hmj1j2ZH);
    hs->Add(hmj1j2TTH);
    //hs->Add(hmj1j2VBF);
-   hs->Add(hmj1j2reco);
    hs->Draw();
-  cMassJet->cd(4);
-  hmj1j2ZH->Draw();
-  hmj1j2ZHBMatched->Draw("same");
+   hmj1j2reco->Draw("same");
 
+ TLegend *leg = new TLegend(0.5604027,0.6384615,0.8892617,0.8916084,NULL,"brNDC");
+//  leg->SetTextFont(62);
+  leg->SetLineColor(1);
+  leg->SetLineStyle(1);
+  leg->SetLineWidth(1);
+  leg->SetFillColor(0);
+  leg->SetFillStyle(1001);
+
+  leg->AddEntry(hmj1j2GGHCuts,"GGH", "f");
+  leg->AddEntry(hmj1j2WH,"WH", "f");
+  leg->AddEntry(hmj1j2ZH,"ZH", "f");
+  leg->AddEntry(hmj1j2TTH,"TTH", "f");
+  leg->AddEntry(hmj1j2reco,"HH", "f");
+
+  leg->Draw();
+
+/*
+  TCanvas* cMassZHJet = new TCanvas("cMassZHJet","Mass",100,100,800,800);
+  TLegend *legZH = new TLegend(0.5604027,0.6384615,0.8892617,0.8916084,NULL,"brNDC");
+//  leg->SetTextFont(62);
+  legZH->SetLineColor(1);
+  legZH->SetLineStyle(1);
+  legZH->SetLineWidth(1);
+  legZH->SetFillColor(0);
+  legZH->SetFillStyle(1001);
+
+  legZH->AddEntry(hmj1j2ZH,"All selected ZH events", "f");
+  legZH->AddEntry(hmj1j2ZHBMatched,"BMatched ZH events", "f");
+
+   hmj1j2ZH->Draw();
+   hmj1j2ZHBMatched->Draw("same");
+*/
+
+/*
   TCanvas* cDeltaR = new TCanvas("cDeltaR","DeltaR",100,100,800,800);
-  hDeltaRHH->Scale(0.5);
+  hDeltaRHH->Scale(0.6);
   hDeltaRHH->Draw();
+  hDeltaRZH->Scale(0.5);
   hDeltaRZH->Draw("same");
+  hDeltaRWH->Scale(0.3);
   hDeltaRWH->Draw("same");
   hDeltaRGGH->Draw("same");
   hDeltaRTTH->Draw("same");
+
+ TLegend *legDeltaR = new TLegend(0.5604027,0.6384615,0.8892617,0.8916084,NULL,"brNDC");
+//  leg->SetTextFont(62);
+  legDeltaR->SetLineColor(1);
+  legDeltaR->SetLineStyle(1);
+  legDeltaR->SetLineWidth(1);
+  legDeltaR->SetFillColor(0);
+  legDeltaR->SetFillStyle(1001);
+     
+  legDeltaR->AddEntry(hDeltaRGGH,"GGH", "l");
+  legDeltaR->AddEntry(hDeltaRWH,"WH", "l");
+  legDeltaR->AddEntry(hDeltaRZH,"ZH", "l");
+  legDeltaR->AddEntry(hDeltaRTTH,"TTH", "l");
+  legDeltaR->AddEntry(hDeltaRHH,"HH", "l");
+
+  legDeltaR->Draw();
+*/
 
 
   TCanvas* cMassVerifJet = new TCanvas("cMassVerifJet","Mass",100,100,800,800);  
@@ -1298,6 +1726,7 @@ void DiHAnalysis(){
   hbkg->Add(hmj1j2WH);
   hbkg->Draw();
 
+
   int bin1 = hbkg->FindBin(110);
   int bin2 = hbkg->FindBin(140);
   float NumBkg = hbkg->Integral(bin1,bin2);
@@ -1305,19 +1734,24 @@ void DiHAnalysis(){
   float Significance = NumEvts/sqrt(NumBkg);
   float Num = hbkg->Integral();
   float NumZH = hmj1j2ZH->Integral();
+  float NumTTH = hmj1j2TTH->Integral();
   float NumZHWindow = hmj1j2ZH->Integral(bin1,bin2);
   float NumWHWindow = hmj1j2WH->Integral(bin1,bin2);
+  float NumTTHWindow = hmj1j2TTH->Integral(bin1,bin2);
   float NumGGHWindow = hmj1j2GGHCuts->Integral(bin1,bin2);
   float NumZHBMatched = hmj1j2ZHBMatched->Integral();
   float NumZHBMatchedWindow = hmj1j2ZHBMatched->Integral(bin1,bin2);
+
 
   cout <<"Number of background events between 105 and 130 GeV : "<<NumBkg<<"\n"<<
     "Number of HH events between 110 and 140GeV : "<<NumEvts<<"\n"<<
     "Number  events between 0 and 300GeV : "<<Num<<"\n"<<
     "Number of ZH events between 0 and 300GeV : "<<NumZH<<"\n"<<
     "Number of BMatched ZH events between 0 and 300GeV : "<<NumZHBMatched<<"\n"<<
+    "Number of TTH events between 0 and 300GeV : "<<NumTTH<<"\n"<<
     "Number of ZH events between 110 and 140GeV : "<<NumZHWindow<<"\n"<<
     "Number of WH events between 110 and 140GeV : "<<NumWHWindow<<"\n"<<
+    "Number of TTH events between 110 and 140GeV : "<<NumTTHWindow<<"\n"<<
     "Number of GGH events between 110 and 140GeV : "<<NumGGHWindow<<"\n"<<
     "Number of BMatched ZH events between 110 and 140GeV : "<<NumZHBMatchedWindow<<"\n"<<
     "Number of BMatched ZH events over ZH events between 110 and 140GeV : "<<NumZHBMatchedWindow/NumZHWindow<<"\n"<<
@@ -1346,7 +1780,160 @@ void DiHAnalysis(){
   hjet2isMatched->Scale(1/scale2);
   hjet2isMatched->Draw();
   */
+  TCanvas* cnJets = new TCanvas("cnJets","nJets",100,100,800,800);
+  hnJetsTTH->Draw();
+  hnJetsZH->Draw("same");
+  hnJetsHH->Draw("same");
+  hnJetsWH->Draw("same");
+  hnJetsGGH->Draw("same");
 
+ TLegend *legnJets = new TLegend(0.5604027,0.6384615,0.8892617,0.8916084,NULL,"brNDC");
+//  leg->SetTextFont(62);
+  legnJets->SetLineColor(1);
+  legnJets->SetLineStyle(1);
+  legnJets->SetLineWidth(1);
+  legnJets->SetFillColor(0);
+  legnJets->SetFillStyle(1001);
+    	  
+  legnJets->AddEntry(hnJetsGGH,"GGH", "l");
+  legnJets->AddEntry(hnJetsWH,"WH", "l");
+  legnJets->AddEntry(hnJetsZH,"ZH", "l");
+  legnJets->AddEntry(hnJetsTTH,"TTH", "l");
+  legnJets->AddEntry(hnJetsHH,"HH", "l");
+    	  
+  legnJets->Draw();
+
+
+
+  TCanvas* cnJetsInt = new TCanvas("cnJetsInt","nJets Normalized",100,100,800,800);
+  TH1F* hnJetsnormalizedGGH = hnJetsGGH->Clone();
+  hnJetsnormalizedGGH->Scale(1/hnJetsnormalizedGGH->Integral());
+  hnJetsnormalizedGGH->Draw();
+  TH1F* hnJetsnormalizedZH = hnJetsZH->Clone(); 
+  hnJetsnormalizedZH->Scale(1/hnJetsnormalizedZH->Integral());
+  hnJetsnormalizedZH->Draw("same");
+  TH1F* hnJetsnormalizedHH = hnJetsHH->Clone();
+  hnJetsnormalizedHH->Scale(1/hnJetsnormalizedHH->Integral());
+  hnJetsnormalizedHH->Draw("same");
+  TH1F* hnJetsnormalizedWH = hnJetsWH->Clone();
+  hnJetsnormalizedWH->Scale(1/hnJetsnormalizedWH->Integral());
+  hnJetsnormalizedWH->Draw("same");
+  TH1F* hnJetsnormalizedTTH = hnJetsTTH->Clone();
+  hnJetsnormalizedTTH->Scale(1/hnJetsnormalizedTTH->Integral());
+  hnJetsnormalizedTTH->Draw("same");
+
+ TLegend *legnJetsInt = new TLegend(0.5604027,0.6384615,0.8892617,0.8916084,NULL,"brNDC");
+//  leg->SetTextFont(62);
+  legnJetsInt->SetLineColor(1);
+  legnJetsInt->SetLineStyle(1);
+  legnJetsInt->SetLineWidth(1);
+  legnJetsInt->SetFillColor(0);
+  legnJetsInt->SetFillStyle(1001);
+    	  
+  legnJetsInt->AddEntry(hnJetsGGH,"GGH", "l");
+  legnJetsInt->AddEntry(hnJetsWH,"WH", "l");
+  legnJetsInt->AddEntry(hnJetsZH,"ZH", "l");
+  legnJetsInt->AddEntry(hnJetsTTH,"TTH", "l");
+  legnJetsInt->AddEntry(hnJetsHH,"HH", "l");
+    	  
+  legnJetsInt->Draw();
+
+
+  TCanvas* cMassPho = new TCanvas("cMassPho","DiPhotonMass",100,100,800,800);
+
+  THStack *hsPho = new THStack("hsPho","Di-photon Mass");
+
+//Rescale GGH
+   float NormalisationConstPho ;
+   NormalisationConstPho = (hdiphoMGGH->GetEntries())/(hdiphoMGGHCuts->GetEntries());
+   hdiphoMGGHCuts->Scale(NormalisationConstPho);
+
+   hsPho->Add(hdiphoMGGHCuts);
+   hsPho->Add(hdiphoMWH);
+   hsPho->Add(hdiphoMZH);
+   hsPho->Add(hdiphoMTTH);
+   hsPho->Add(hdiphoMHH);
+   hsPho->Draw();
+
+ TLegend *legPho = new TLegend(0.5604027,0.6384615,0.8892617,0.8916084,NULL,"brNDC");
+//  leg->SetTextFont(62);
+  legPho->SetLineColor(1);
+  legPho->SetLineStyle(1);
+  legPho->SetLineWidth(1);
+  legPho->SetFillColor(0);
+  legPho->SetFillStyle(1001);
+     
+  legPho->AddEntry(hdiphoMGGHCuts,"GGH", "f");
+  legPho->AddEntry(hdiphoMWH,"WH", "f");
+  legPho->AddEntry(hdiphoMZH,"ZH", "f");
+  legPho->AddEntry(hdiphoMTTH,"TTH", "f");
+  legPho->AddEntry(hdiphoMHH,"HH", "f");
+     
+  legPho->Draw();
+
+
+  TCanvas* cJetPtRank = new TCanvas("cJetPtRank","Jets Pt Rank",100,100,800,800);
+  cJetPtRank->Divide(2,2);
+  cJetPtRank->cd(1);
+  hjet1PtRankHH->Draw();
+//  hjet1PtRankZH->Draw("same");
+//  hjet1PtRankTTH->Draw("same");
+//  hjet1PtRankWH->Draw("same");
+//  hjet1PtRankGGH->Draw("same");
+
+ TLegend *legJetPtRank = new TLegend(0.5604027,0.6384615,0.8892617,0.8916084,NULL,"brNDC");
+//  leg->SetTextFont(62);
+  legJetPtRank->SetLineColor(1);
+  legJetPtRank->SetLineStyle(1);
+  legJetPtRank->SetLineWidth(1);
+  legJetPtRank->SetFillColor(0);
+  legJetPtRank->SetFillStyle(1001);
+     
+//  legJetPtRank->AddEntry(hjet1PtRankGGH,"GGH", "l");
+//  legJetPtRank->AddEntry(hjet1PtRankWH,"WH", "l");
+//  legJetPtRank->AddEntry(hjet1PtRankZH,"ZH", "l");
+//  legJetPtRank->AddEntry(hjet1PtRankTTH,"TTH", "l");
+//  legJetPtRank->AddEntry(hjet1PtRankHH,"HH", "f");
+     
+//  legJetPtRank->Draw();
+  
+  cJetPtRank->cd(2);
+  hjet2PtRankHH->Draw();
+//  hjet2PtRankZH->Draw("same");
+//  hjet2PtRankTTH->Draw("same");
+//  hjet2PtRankWH->Draw("same");
+//  hjet2PtRankGGH->Draw("same");
+//  legJetPtRank->Draw();
+
+  cJetPtRank->cd(3);
+  hjet3PtRankHH->Draw();
+//  hjet3PtRankZH->Draw("same");
+//  hjet3PtRankTTH->Draw("same");
+//  hjet3PtRankWH->Draw("same");
+//  hjet3PtRankGGH->Draw("same");
+//  legJetPtRank->Draw();
+
+  cJetPtRank->cd(4);
+  hjet4PtRankHH->Draw();
+//  hjet4PtRankZH->Draw("same");
+//  hjet4PtRankTTH->Draw("same");
+//  hjet4PtRankWH->Draw("same");
+//  hjet4PtRankGGH->Draw("same");
+//  legJetPtRank->Draw();
+
+
+  TCanvas* cJetcsvRank = new TCanvas("cJetcsvRank","Jets Csv Rank",100,100,800,800);
+  cJetcsvRank->Divide(2,2);
+  cJetcsvRank->cd(1);
+  hjet1csvRankHH->Draw();
+  cJetcsvRank->cd(2);
+  hjet2csvRankHH->Draw();
+  cJetcsvRank->cd(3);
+  hjet3csvRankHH->Draw();
+  cJetcsvRank->cd(4);
+  hjet4csvRankHH->Draw();
+
+/*
   TH2F* hSignificance=new TH2F("Significance","Significance",
 			 3,//Number of bins
 			 0,//Lower X Boundary
@@ -1364,6 +1951,6 @@ void DiHAnalysis(){
 
   TCanvas* cSignificance = new TCanvas("cSignificance","Significance",100,100,800,800);
   hSignificance->Draw("COLORZ,TEXT");
-  
+*/  
 
 }

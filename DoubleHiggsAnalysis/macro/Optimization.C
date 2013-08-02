@@ -10,7 +10,7 @@
 void Optimization(){
   
   //Open a file, save the ntuple and close the file
-  TFile *in_file = TFile::Open("histograms_diH_studiesBtagging.root");
+  TFile *in_file = TFile::Open("histograms_diH_studiesBtagging4.root");
   
  
   TTree* my_tuple = (TTree*) in_file->GetObjectChecked("doubleHiggsAnalysis/gghh_m125_8TeV",
@@ -40,10 +40,10 @@ void Optimization(){
 
   //Smallest Cut
   float csvCut1 ;
-  csvCut1 = 0.898;
+  csvCut1 = 0.679;
   //Biggest Cut
   float csvCut2 ;
-  csvCut2 = 0.898;
+  csvCut2 = 0.679;
 
 //Create the 2D histogram of the optimization
   TH2F* hOptimization=new TH2F("Significance per window considered","Significance per window considered",
@@ -69,7 +69,7 @@ void Optimization(){
 			 150,//Number of bins
 			 0,//Lower X Boundary
 			 300);//Upper X Boundary
-  hmj1j2HH->SetLineColor(kRed-6);
+  hmj1j2HH->SetFillColor(kViolet);
 
   TH1F* hmj1j2ZH=new TH1F("mj1mj2ZH","Di-jetZH Mass;Mass;",
 			 150,//Number of bins
@@ -105,7 +105,7 @@ void Optimization(){
 			 150,//Number of bins
 			 0,//Lower X Boundary
 			 300);//Upper X Boundary
-  hmj1j2TTH->SetFillColor(kBlue-6); 
+  hmj1j2TTH->SetFillColor(kOrange); 
  
 
 
@@ -116,7 +116,7 @@ void Optimization(){
 
   bool jet1isMatched, jet2isMatched, jet1isBMatched, jet2isBMatched;
 
-  int jet3;
+  int jet3, nJets;
 
   numJet1Matched = 0;
   numJet2Matched = 0;
@@ -160,6 +160,7 @@ void Optimization(){
   my_tuple->SetBranchAddress("tcheBtag2",&tcheBtag2); 
   my_tuple->SetBranchAddress("tcheBtag3",&tcheBtag3);
   my_tuple->SetBranchAddress("weight",&weight);
+  my_tuple->SetBranchAddress("nJets",&nJets);
 
   my_tupleZH->SetBranchAddress("pho1pt",&pho1pt);
   my_tupleZH->SetBranchAddress("pho2pt",&pho2pt);
@@ -199,6 +200,7 @@ void Optimization(){
   my_tupleZH->SetBranchAddress("tcheBtag2",&tcheBtag2); 
   my_tupleZH->SetBranchAddress("tcheBtag3",&tcheBtag3);
   my_tupleZH->SetBranchAddress("weight",&weight);
+  my_tupleZH->SetBranchAddress("nJets",&nJets);
 
   my_tupleWH->SetBranchAddress("pho1pt",&pho1pt);
   my_tupleWH->SetBranchAddress("pho2pt",&pho2pt);
@@ -236,6 +238,7 @@ void Optimization(){
   my_tupleWH->SetBranchAddress("tcheBtag2",&tcheBtag2); 
   my_tupleWH->SetBranchAddress("tcheBtag3",&tcheBtag3);
   my_tupleWH->SetBranchAddress("weight",&weight);
+  my_tupleWH->SetBranchAddress("nJets",&nJets);
 
   my_tupleGGH->SetBranchAddress("pho1pt",&pho1pt);
   my_tupleGGH->SetBranchAddress("pho2pt",&pho2pt);
@@ -273,6 +276,7 @@ void Optimization(){
   my_tupleGGH->SetBranchAddress("tcheBtag2",&tcheBtag2); 
   my_tupleGGH->SetBranchAddress("tcheBtag3",&tcheBtag3);
   my_tupleGGH->SetBranchAddress("weight",&weight);
+  my_tupleGGH->SetBranchAddress("nJets",&nJets);
 
   my_tupleTTH->SetBranchAddress("pho1pt",&pho1pt);
   my_tupleTTH->SetBranchAddress("pho2pt",&pho2pt);
@@ -310,6 +314,7 @@ void Optimization(){
   my_tupleTTH->SetBranchAddress("tcheBtag2",&tcheBtag2); 
   my_tupleTTH->SetBranchAddress("tcheBtag3",&tcheBtag3);
   my_tupleTTH->SetBranchAddress("weight",&weight);
+  my_tupleTTH->SetBranchAddress("nJets",&nJets);
 
 
   
@@ -332,7 +337,8 @@ void Optimization(){
 
     if ((pho1pt/diphoM) > (1/2) &&
 	(pho2pt/diphoM) > (25/120)&&
-	(jet3) < 0 &&
+//	(jet3) < 0 &&
+	(nJets) <= 4 &&
 	(pho1Eta) < 2.5 &&
 	(pho1Eta) > -2.5 &&
 	(pho2Eta) < 2.5 &&
@@ -386,7 +392,8 @@ void Optimization(){
 
     if ((pho1pt/diphoM) > (1/2) &&
 	(pho2pt/diphoM) > (25/120)&&
-	(jet3) < 0 &&
+//	(jet3) < 0 &&
+	(nJets) <= 4 &&
 	(pho1Eta) < 2.5 &&
 	(pho1Eta) > -2.5 &&
 	(pho2Eta) < 2.5 &&
@@ -433,7 +440,8 @@ void Optimization(){
 
     if ((pho1pt/diphoM) > (1/2) &&
 	(pho2pt/diphoM) > (25/120)&&
-	(jet3) < 0 &&
+//	(jet3) < 0 &&
+	(nJets) <= 4 &&
 	(pho1Eta) < 2.5 &&
 	(pho1Eta) > -2.5 &&
 	(pho2Eta) < 2.5 &&
@@ -481,7 +489,8 @@ void Optimization(){
 
     if ((pho1pt/diphoM) > (1/2) &&
 	(pho2pt/diphoM) > (25/120)&&
-	(jet3) < 0 &&
+//	(jet3) < 0 &&
+	(nJets) <= 4 &&
 	(pho1Eta) < 2.5 &&
 	(pho1Eta) > -2.5 &&
 	(pho2Eta) < 2.5 &&
@@ -537,7 +546,8 @@ void Optimization(){
 
 	(pho1pt/diphoM) > (1/2) &&
 	(pho2pt/diphoM) > (25/120)&&
-	(jet3) < 0 &&
+//	(jet3) < 0 &&
+	(nJets) <= 4 &&
 	(pho1Eta) < 2.5 &&
 	(pho1Eta) > -2.5 &&
 	(pho2Eta) < 2.5 &&
@@ -668,7 +678,7 @@ void Optimization(){
   cMassJet->cd(1);
   hmj1j2GGH->Draw();
   cMassJet->cd(2);
-  hmj1j2HH->Draw();
+  hmj1j2TTH->Draw();
   cMassJet->cd(3);
   THStack *hs = new THStack("hs","three plots");
    hs->Add(hmj1j2GGHCuts);
@@ -676,7 +686,7 @@ void Optimization(){
    hs->Add(hmj1j2ZH);
    //hs->Add(hmj1j2VBF);
    hs->Add(hmj1j2HH);
-   hs->Add(hmj1j2THH);
+   hs->Add(hmj1j2TTH);
    hs->Draw();
   cMassJet->cd(4);
   hmj1j2ZH->Draw();
