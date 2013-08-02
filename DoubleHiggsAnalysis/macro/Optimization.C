@@ -10,7 +10,7 @@
 void Optimization(){
   
   //Open a file, save the ntuple and close the file
-  TFile *in_file = TFile::Open("histograms_diH_studiesBtagging4.root");
+  TFile *in_file = TFile::Open("histograms_diH_studiesBtagging7.root");
   
  
   TTree* my_tuple = (TTree*) in_file->GetObjectChecked("doubleHiggsAnalysis/gghh_m125_8TeV",
@@ -28,7 +28,13 @@ void Optimization(){
   TTree* my_tupleVBF = (TTree*) in_file->GetObjectChecked("doubleHiggsAnalysis/vbf_m125_8TeV",
   						      "TTree");
 
-  TTree* my_tupleTTH = (TTree*) in_file->GetObjectChecked("doubleHiggsAnalysis/tth_m125_8TeV",
+  TTree* my_tupleData = (TTree*) in_file->GetObjectChecked("doubleHiggsAnalysis/data",
+  						      "TTree");
+
+  //Open a file, save the ntuple and close the file
+  TFile *in_file2 = TFile::Open("histograms_diH_studiesBtagging6.root");
+
+  TTree* my_tupleTTH = (TTree*) in_file2->GetObjectChecked("doubleHiggsAnalysis/tth_m125_8TeV",
   						      "TTree");
 
   //Prints only the number of entries
@@ -107,6 +113,11 @@ void Optimization(){
 			 300);//Upper X Boundary
   hmj1j2TTH->SetFillColor(kOrange); 
  
+  TH1F* hmj1j2data=new TH1F("mj1mj2data","Di-jet Mass Data;Mass;",
+			 150,//Number of bins
+			 0,//Lower X Boundary
+			 300);//Upper X Boundary
+  hmj1j2data->SetFillColor(kPink-6); 
 
 
  
@@ -316,6 +327,43 @@ void Optimization(){
   my_tupleTTH->SetBranchAddress("weight",&weight);
   my_tupleTTH->SetBranchAddress("nJets",&nJets);
 
+  my_tupleData->SetBranchAddress("pho1pt",&pho1pt);
+  my_tupleData->SetBranchAddress("pho2pt",&pho2pt);
+  my_tupleData->SetBranchAddress("pho1Eta",&pho1Eta);
+  my_tupleData->SetBranchAddress("pho2Eta",&pho2Eta);
+  my_tupleData->SetBranchAddress("pho1Phi",&pho1Phi);
+  my_tupleData->SetBranchAddress("pho2Phi",&pho2Phi);
+  my_tupleData->SetBranchAddress("diphoM",&diphoM);
+  my_tupleData->SetBranchAddress("diphoEta",&diphoEta);
+  my_tupleData->SetBranchAddress("diphopt",&diphopt);
+  my_tupleData->SetBranchAddress("dijetEta",&dijetEta);
+  my_tupleData->SetBranchAddress("jet1Pt",&jet1Pt);
+  my_tupleData->SetBranchAddress("jet2Pt",&jet2Pt);
+  my_tupleData->SetBranchAddress("jet1p4",&jet1p4);
+  my_tupleData->SetBranchAddress("jet2p4",&jet2p4);
+  my_tupleData->SetBranchAddress("jet3p4",&jet3p4);
+  my_tupleData->SetBranchAddress("jet1genPt",&jet1genPt);
+  my_tupleData->SetBranchAddress("jet2genPt",&jet2genPt);
+  my_tupleData->SetBranchAddress("jet1Eta",&jet1Eta);
+  my_tupleData->SetBranchAddress("jet2Eta",&jet2Eta);
+  my_tupleData->SetBranchAddress("mj1j2",&mj1j2);
+  my_tupleData->SetBranchAddress("jet3",&jet3);
+  my_tupleData->SetBranchAddress("jet1isMatched",&jet1isMatched);
+  my_tupleData->SetBranchAddress("jet2isMatched",&jet2isMatched);
+  my_tupleData->SetBranchAddress("csvBtag1",&csvBtag1); 
+  my_tupleData->SetBranchAddress("csvBtag2",&csvBtag2); 
+  my_tupleData->SetBranchAddress("csvBtag3",&csvBtag3);  
+  my_tupleData->SetBranchAddress("csvMvaBtag1",&csvMvaBtag1); 
+  my_tupleData->SetBranchAddress("csvMvaBtag2",&csvMvaBtag2); 
+  my_tupleData->SetBranchAddress("csvMvaBtag3",&csvMvaBtag3); 
+  my_tupleData->SetBranchAddress("jetProbBtag1",&jetProbBtag1); 
+  my_tupleData->SetBranchAddress("jetProbBtag2",&jetProbBtag2); 
+  my_tupleData->SetBranchAddress("jetProbBtag3",&jetProbBtag3); 
+  my_tupleData->SetBranchAddress("tcheBtag1",&tcheBtag1); 
+  my_tupleData->SetBranchAddress("tcheBtag2",&tcheBtag2); 
+  my_tupleData->SetBranchAddress("tcheBtag3",&tcheBtag3);
+  my_tupleData->SetBranchAddress("weight",&weight);
+  my_tupleData->SetBranchAddress("nJets",&nJets);
 
   
   for (int irow=0;irow<my_tupleZH->GetEntries();++irow){
@@ -338,7 +386,7 @@ void Optimization(){
     if ((pho1pt/diphoM) > (1/2) &&
 	(pho2pt/diphoM) > (25/120)&&
 //	(jet3) < 0 &&
-	(nJets) <= 4 &&
+	(nJets) <= 3 &&
 	(pho1Eta) < 2.5 &&
 	(pho1Eta) > -2.5 &&
 	(pho2Eta) < 2.5 &&
@@ -393,7 +441,7 @@ void Optimization(){
     if ((pho1pt/diphoM) > (1/2) &&
 	(pho2pt/diphoM) > (25/120)&&
 //	(jet3) < 0 &&
-	(nJets) <= 4 &&
+	(nJets) <= 3 &&
 	(pho1Eta) < 2.5 &&
 	(pho1Eta) > -2.5 &&
 	(pho2Eta) < 2.5 &&
@@ -441,7 +489,7 @@ void Optimization(){
     if ((pho1pt/diphoM) > (1/2) &&
 	(pho2pt/diphoM) > (25/120)&&
 //	(jet3) < 0 &&
-	(nJets) <= 4 &&
+	(nJets) <= 3 &&
 	(pho1Eta) < 2.5 &&
 	(pho1Eta) > -2.5 &&
 	(pho2Eta) < 2.5 &&
@@ -490,7 +538,7 @@ void Optimization(){
     if ((pho1pt/diphoM) > (1/2) &&
 	(pho2pt/diphoM) > (25/120)&&
 //	(jet3) < 0 &&
-	(nJets) <= 4 &&
+	(nJets) <= 3 &&
 	(pho1Eta) < 2.5 &&
 	(pho1Eta) > -2.5 &&
 	(pho2Eta) < 2.5 &&
@@ -512,6 +560,54 @@ void Optimization(){
 	  || (csvMax)<= csvCut2 
 		) continue;
 	hmj1j2TTH->Fill(jetSumrecop4.M(),weight);
+ 
+    }
+
+  }
+
+
+ for (int irow=0;irow<my_tupleData->GetEntries();++irow){
+    my_tupleData->GetEntry(irow);
+        float jet1recoPt = (jet1Pt-jet1genPt)*0.9+jet1genPt;
+        float jet2recoPt = (jet2Pt-jet2genPt)*0.9+jet2genPt;
+
+	TLorentzVector  jet1recop4 = *jet1p4;
+	jet1recop4.SetPx((jet1recop4.Px())*jet1recoPt/jet1Pt);
+	jet1recop4.SetPy((jet1recop4.Py())*jet1recoPt/jet1Pt);
+	jet1recop4.SetPz((jet1recop4.Pz())*jet1recoPt/jet1Pt);
+	jet1recop4.SetE((jet1recop4.E())*jet1recoPt/jet1Pt);
+	TLorentzVector  jet2recop4 = *jet2p4;
+	jet2recop4.SetPx((jet2recop4.Px())*jet2recoPt/jet2Pt);
+	jet2recop4.SetPy((jet2recop4.Py())*jet2recoPt/jet2Pt);
+	jet2recop4.SetPz((jet2recop4.Pz())*jet2recoPt/jet2Pt);
+	jet2recop4.SetE((jet2recop4.E())*jet2recoPt/jet2Pt);
+	TLorentzVector jetSumrecop4 = jet1recop4 + jet2recop4;
+
+    if ((pho1pt/diphoM) > (1/2) &&
+	(pho2pt/diphoM) > (25/120)&&
+//	(jet3) < 0 &&
+	(nJets) <= 3 &&
+	(pho1Eta) < 2.5 &&
+	(pho1Eta) > -2.5 &&
+	(pho2Eta) < 2.5 &&
+	(pho2Eta) > -2.5 &&
+	(jet1recop4.Pt()) > 40 &&
+	(jet2recop4.Pt()) > 40 &&
+	(jet1Eta) < 2.1 &&
+	(jet1Eta) > -2.1 &&
+	(jet2Eta) < 2.1 &&
+	(jet2Eta) > -2.1
+	
+	)
+      { //Remplissage des histogrammes
+	float csvMin;
+	csvMin = min(csvBtag1,csvBtag2);
+	float csvMax;
+	csvMax = max(csvBtag1,csvBtag2);
+	if( (csvMin)<=csvCut1 
+	  || (csvMax)<= csvCut2 
+		) continue;
+	hmj1j2data->Fill(jetSumrecop4.M(),0.0602);
  
     }
 
@@ -547,7 +643,7 @@ void Optimization(){
 	(pho1pt/diphoM) > (1/2) &&
 	(pho2pt/diphoM) > (25/120)&&
 //	(jet3) < 0 &&
-	(nJets) <= 4 &&
+	(nJets) <= 3 &&
 	(pho1Eta) < 2.5 &&
 	(pho1Eta) > -2.5 &&
 	(pho2Eta) < 2.5 &&
@@ -620,6 +716,7 @@ void Optimization(){
   hbkg->Add(hmj1j2GGHCuts);
   hbkg->Add(hmj1j2WH);
   hbkg->Add(hmj1j2TTH);
+  hbkg->Add(hmj1j2data);
   //hbkg->Draw();
 
 
@@ -687,6 +784,7 @@ void Optimization(){
    //hs->Add(hmj1j2VBF);
    hs->Add(hmj1j2HH);
    hs->Add(hmj1j2TTH);
+   hs->Add(hmj1j2data);
    hs->Draw();
   cMassJet->cd(4);
   hmj1j2ZH->Draw();
