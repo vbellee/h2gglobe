@@ -868,3 +868,8 @@ Float_t jet_algoPF3_secVtx3deL[MAX_JETS];
 Bool_t jet_algoPF1_bgenMatched[MAX_JETS];
 Bool_t jet_algoPF2_bgenMatched[MAX_JETS];
 Bool_t jet_algoPF3_bgenMatched[MAX_JETS];
+Float_t jet_algoPF1_ptD_QC[MAX_JETS];
+Float_t jet_algoPF1_axis1_QC[MAX_JETS];
+Float_t jet_algoPF1_axis2_QC[MAX_JETS];
+Int_t jet_algoPF1_nCharged_QC[MAX_JETS];
+Int_t jet_algoPF1_nNeutrals_ptCut[MAX_JETS];

@@ -847,3 +847,8 @@ void Branch_jet_algoPF3_secVtx3deL(TTree* tree) { tree->Branch("jet_algoPF3_secV
 void Branch_jet_algoPF1_bgenMatched(TTree* tree) { tree->Branch("jet_algoPF1_bgenMatched", &jet_algoPF1_bgenMatched, "jet_algoPF1_bgenMatched[jet_algoPF1_n]/O"); };
 void Branch_jet_algoPF2_bgenMatched(TTree* tree) { tree->Branch("jet_algoPF2_bgenMatched", &jet_algoPF2_bgenMatched, "jet_algoPF2_bgenMatched[jet_algoPF2_n]/O"); };
 void Branch_jet_algoPF3_bgenMatched(TTree* tree) { tree->Branch("jet_algoPF3_bgenMatched", &jet_algoPF3_bgenMatched, "jet_algoPF3_bgenMatched[jet_algoPF3_n]/O"); };
+void Branch_jet_algoPF1_ptD_QC(TTree* tree) { tree->Branch("jet_algoPF1_ptD_QC", &jet_algoPF1_ptD_QC, "jet_algoPF1_ptD_QC[jet_algoPF1_n]/F"); };
+void Branch_jet_algoPF1_axis1_QC(TTree* tree) { tree->Branch("jet_algoPF1_axis1_QC", &jet_algoPF1_axis1_QC, "jet_algoPF1_axis1_QC[jet_algoPF1_n]/F"); };
+void Branch_jet_algoPF1_axis2_QC(TTree* tree) { tree->Branch("jet_algoPF1_axis2_QC", &jet_algoPF1_axis2_QC, "jet_algoPF1_axis2_QC[jet_algoPF1_n]/F"); };
+void Branch_jet_algoPF1_nCharged_QC(TTree* tree) { tree->Branch("jet_algoPF1_nCharged_QC", &jet_algoPF1_nCharged_QC, "jet_algoPF1_nCharged_QC[jet_algoPF1_n]/I"); };
+void Branch_jet_algoPF1_nNeutrals_ptCut(TTree* tree) { tree->Branch("jet_algoPF1_nNeutrals_ptCut", &jet_algoPF1_nNeutrals_ptCut, "jet_algoPF1_nNeutrals_ptCut[jet_algoPF1_n]/I"); };

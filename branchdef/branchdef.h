@@ -844,3 +844,8 @@ TBranch* b_jet_algoPF3_secVtx3deL;
 TBranch* b_jet_algoPF1_bgenMatched;
 TBranch* b_jet_algoPF2_bgenMatched;
 TBranch* b_jet_algoPF3_bgenMatched;
+TBranch* b_jet_algoPF1_ptD_QC;
+TBranch* b_jet_algoPF1_axis1_QC;
+TBranch* b_jet_algoPF1_axis2_QC;
+TBranch* b_jet_algoPF1_nCharged_QC;
+TBranch* b_jet_algoPF1_nNeutrals_ptCut;
