@@ -43,7 +43,7 @@ void DiHAnalysis(){
   int CiCcut = 4;
 
   //Max Num of jets
-  int MaxJets = 3;
+  int MaxJets = 10;
 
   //Fix the csv Cut (0.244, 0.679, 0.898)
   float csvCut ;
@@ -180,28 +180,28 @@ void DiHAnalysis(){
   hjet2PtBtag->SetFillColor(kGreen-6);
 
   TH1F* hjet1Pt=new TH1F("jet1Pt","Jet 1 Momentum;Pt (GeV);",
-			 100,//Number of bins
+			 50,//Number of bins
 			 0,//Lower X Boundary
 			 500);//Upper X Boundary
-  hjet1Pt->SetFillColor(kGreen-6);
+  hjet1Pt->SetLineColor(kGreen-6);
 
   TH1F* hjet2Pt=new TH1F("jet2Pt","Jet 2 Momentum;Pt (GeV);",
-			 100,//Number of bins
-			 0,//Lower X Boundary
-			 500);//Upper X Boundary
-  hjet2Pt->SetFillColor(kGreen-6);
-
-  TH1F* hjet1recoPt=new TH1F("jet1recoPt","Jet 1 Reconstructed Momentum (with trick);Pt;",
 			 50,//Number of bins
 			 0,//Lower X Boundary
 			 500);//Upper X Boundary
-  hjet1recoPt->SetLineColor(kRed-6);
+  hjet2Pt->SetLineColor(kGreen-6);
 
-  TH1F* hjet2recoPt=new TH1F("jet2recoPt","Jet 2 Reconstructed Momentum (with trick);Pt;",
+  TH1F* hjet1recoPt=new TH1F("jet1recoPt","Jet 1 Momentum;Pt;",
 			 50,//Number of bins
 			 0,//Lower X Boundary
 			 500);//Upper X Boundary
-  hjet2recoPt->SetLineColor(kRed-6);
+  hjet1recoPt->SetLineColor(kRed);
+
+  TH1F* hjet2recoPt=new TH1F("jet2recoPt","Jet 2 Momentum;Pt;",
+			 50,//Number of bins
+			 0,//Lower X Boundary
+			 500);//Upper X Boundary
+  hjet2recoPt->SetLineColor(kRed);
 
   TH1F* hjet1recop4=new TH1F("jet1recop4","Jet 1 Reconstructed Momentum (with trick);Pt;",
 			 50,//Number of bins
@@ -303,13 +303,19 @@ void DiHAnalysis(){
 			 150);//Upper X Boundary
   hdiphoM->SetFillColor(kBlue-6);
 
+  TH1F* hdiphoMdataCuts=new TH1F("diphoMDataCuts","Di-photon Mass (data);Mass;",
+			 80,//Number of bins
+			 100,//Lower X Boundary
+			 180);//Upper X Boundary
+  hdiphoMdataCuts->SetFillColor(kPink-6);
+
   TH1F* hdiphoMdata=new TH1F("diphoMData","Di-photon Mass (data);Mass;",
-			 30,//Number of bins
+			 80,//Number of bins
 			 100,//Lower X Boundary
 			 180);//Upper X Boundary
 //  hdiphoMdata->SetFillColor(kPink-6);
 //  hdiphoMdata->SetFillColor(kPink-6);
-  hdiphoMdata->SetOption("E");
+//  hdiphoMdata->SetOption("E");
 
   TH1F* hbkg=new TH1F("Bkg","Di-jet Mass Bkg;Mass;",
 			 50,//Number of bins
@@ -321,7 +327,7 @@ void DiHAnalysis(){
 			 50,//Number of bins
 			 30,//Lower X Boundary
 			 300);//Upper X Boundary
-  hmj1j2->SetLineColor(kGreen-6);
+  hmj1j2->SetFillColor(kViolet+3);
 
   TH1F* hdiphoMHH=new TH1F("diphoMHH","Di-photon Mass HH;Mass;",
 			 100,//Number of bins
@@ -376,6 +382,12 @@ void DiHAnalysis(){
 			 30,//Lower X Boundary
 			 300);//Upper X Boundary
   hmj1j2ZH->SetFillColor(kGreen);
+
+  TH1F* hmj1j2ZHtrue=new TH1F("mj1mj2ZHtrue","Di-jetZH Mass;Mass;",
+			 50,//Number of bins
+			 30,//Lower X Boundary
+			 300);//Upper X Boundary
+  hmj1j2ZHtrue->SetFillColor(kGreen-2);
 
   TH1F* hmj1j2ZHBMatched=new TH1F("mj1mj2ZHBMatched","Di-jetZH BMatched Mass;Mass;",
 			 50,//Number of bins
@@ -1162,6 +1174,7 @@ void DiHAnalysis(){
 	if( (csvMin)<=csvCut1 
 	  || (csvMax)<= csvCut2 
 		) continue;
+	hmj1j2ZHtrue->Fill(mj1j2,weight);	
 	hmj1j2ZH->Fill(jetSumrecop4.M(),weight);
         hDeltaRZH->Fill(sqrt(asin(sin(pho2Phi-pho1Phi))*asin(sin(pho2Phi-pho1Phi))+(pho2Eta-pho1Eta)*(pho2Eta-pho1Eta)));
 	hdiphoMZH->Fill(diphoM,weight);
@@ -1443,12 +1456,18 @@ void DiHAnalysis(){
 	(jet1Eta) < 2.1 &&
 	(jet1Eta) > -2.1 &&
 	(jet2Eta) < 2.1 &&
-	(jet2Eta) > -2.1 &&
-	jetSumrecop4.M()> StartDijet &&
-	jetSumrecop4.M()< EndDijet
+	(jet2Eta) > -2.1 
 	
 	)
-      { hmj1j2dataCuts->Fill(jetSumrecop4.M(),0.0602);
+	{ hdiphoMdataCuts->Fill(diphoM,0.0602);
+
+
+	if (	jetSumrecop4.M()> StartDijet &&
+		jetSumrecop4.M()< EndDijet){
+
+
+
+	hmj1j2dataCuts->Fill(jetSumrecop4.M(),0.0602);
 
         //Remplissage des histogrammes
 	float csvMin;
@@ -1460,6 +1479,7 @@ void DiHAnalysis(){
 		) continue;
 	hmj1j2data->Fill(jetSumrecop4.M(),0.0602);
 	hdiphoMdata->Fill(diphoM,0.0602);
+		}
     }
 
   }
@@ -1886,35 +1906,38 @@ void DiHAnalysis(){
   cMassJet3->cd(4);
   hcsvBtag2->Draw();
 
-/*
-  TCanvas* cPtJet = new TCanvas("cPtJet","Efficiency after b-cut",100,100,1200,800);
-  cPtJet->Divide(3,2);
+
+  TCanvas* cPtJet = new TCanvas("cPtJet","Signal Pt with 10% resolution improvement",100,100,1200,800);
+
+ TLegend *legPtJet = new TLegend(0.5604027,0.6384615,0.8892617,0.8916084,NULL,"brNDC");
+//  leg->SetTextFont(62);
+  legPtJet->SetLineColor(1);
+  legPtJet->SetLineStyle(1);
+  legPtJet->SetLineWidth(1);
+  legPtJet->SetFillColor(0);
+  legPtJet->SetFillStyle(1001);
+  legPtJet->AddEntry(hjet1recoPt,"Pt Improved resolution", "l");
+  legPtJet->AddEntry(hjet1Pt,"True Pt", "l");
+
+  cPtJet->Divide(2);
   cPtJet->cd(1);
-  //hjet1recoPt->Draw();
-  hjet1Pt->Draw();
-  cPtJet->cd(2); 
-  hjet1PtBtag->Draw();
-  cPtJet->cd(3);
-  hdivisionbis1->Divide(hjet1Pt);
-  hdivisionbis1->Draw();
-  cPtJet->cd(4);
-  hjet2Pt->Draw();
-  //hjet2recoPt->Draw("same");
-  cPtJet->cd(5); 
-  hjet2PtBtag->Draw();
-  cPtJet->cd(6);
-  hdivisionbis2->Divide(hjet2Pt);
-  hdivisionbis2->Draw();
-*/
+  hjet1recoPt->Draw();
+  hjet1Pt->Draw("same");
+  legPtJet->Draw();
+  cPtJet->cd(2);
+  hjet2recoPt->Draw(); 
+  hjet2Pt->Draw("same");
+  legPtJet->Draw();
 
 
+/*
 
   TH1F*ratio = hdivisionbis-> Clone();
   ratio-> Reset();
   ratio-> Divide( hdivisionbis, hjetPt ,1 ,1 ,"B");
   ratio-> SetFillColor(kGreen-6);
   ratio-> Draw("e");
-
+*/
   TCanvas* cMassJet = new TCanvas("cMassJet","Mass",100,100,800,800);
 
   THStack *hs = new THStack("hs","Di-jet Mass");
@@ -1960,8 +1983,9 @@ void DiHAnalysis(){
   leg->Draw();
 
 
-/*
-  TCanvas* cMassZHJet = new TCanvas("cMassZHJet","Mass",100,100,800,800);
+
+  TCanvas* cResolution = new TCanvas("cResolution","Mass",100,100,800,800);
+
   TLegend *legZH = new TLegend(0.5604027,0.6384615,0.8892617,0.8916084,NULL,"brNDC");
 //  leg->SetTextFont(62);
   legZH->SetLineColor(1);
@@ -1970,12 +1994,20 @@ void DiHAnalysis(){
   legZH->SetFillColor(0);
   legZH->SetFillStyle(1001);
 
-  legZH->AddEntry(hmj1j2ZH,"All selected ZH events", "f");
-  legZH->AddEntry(hmj1j2ZHBMatched,"BMatched ZH events", "f");
+  legZH->AddEntry(hmj1j2ZHtrue,"ZH events", "f");
+  legZH->AddEntry(hmj1j2,"HH events", "f");
+  legZH->AddEntry(hmj1j2ZH,"ZH events Improved resolution", "f");
+  legZH->AddEntry(hmj1j2reco,"HH events Improved resolution", "f");
 
-   hmj1j2ZH->Draw();
-   hmj1j2ZHBMatched->Draw("same");
-*/
+   hmj1j2ZHtrue->Draw();
+   hmj1j2ZH->Draw("same");
+   hmj1j2->Draw("same");
+   hmj1j2reco->Draw("same");
+   legZH->Draw();
+
+
+
+ 
 
 
   TCanvas* cDeltaR = new TCanvas("cDeltaR","DeltaR",100,100,800,800);
@@ -2146,13 +2178,25 @@ void DiHAnalysis(){
   legnJetsInt->Draw();
 
   TCanvas* cMassPhoData = new TCanvas("cMassPhoData","Di-Photon Mass",100,100,800,800);
-   hdiphoMdata->Draw("E");
-   hdiphoMdata->Fit("gexpo");
-   TH1F* hdiphoBkg = new TH1F("diphoBkg","Di-photon Mass Fitted;Mass;",
-			 30,//Number of bins
-			 100,//Lower X Boundary
-			 180);
-   Expo = new TF1 ("Expo","exp(3.693)-0.0183*x",100,180);
+
+//Rescale Data after BCuts and window
+   float NormalisationData ;
+   NormalisationData = (hdiphoMdata->GetEntries())/(hdiphoMdataCuts->GetEntries());
+   hdiphoMdataCuts->Scale(NormalisationData);
+
+   hdiphoMdataCuts->Draw("E");
+   hdiphoMdataCuts->Fit("gexpo");
+   //  float WD = gexpo->integral(123,127)/(gexpo->integral (100,180));
+//   cout <<"Constant of normalization for the dipho diagram :"<< WD<<"/n"<<endl;
+  int startW = 123;
+  int endW = 127;  
+  int bin1W = hdiphoMdata->FindBin(startW);
+  int bin2W = hdiphoMdata->FindBin(endW);
+   float NPhoW = hdiphoMdata->Integral(bin1W,bin2W);
+   float NJetW = hmj1j2data->Integral();
+   cout<<"Num of pho events in the window :"<<NPhoW<<"/n"<<
+	   "Num of events in the mjj histo"<<NJetW<<"/n"<<endl;
+
 
   TCanvas* cMassPho = new TCanvas("cMassPho","DiPhotonMass",100,100,800,800);
 
@@ -2163,13 +2207,14 @@ void DiHAnalysis(){
    NormalisationConstPho = (hdiphoMGGH->GetEntries())/(hdiphoMGGHCuts->GetEntries());
    hdiphoMGGHCuts->Scale(NormalisationConstPho);
 
-
+/*
 //Scale the histograms for 14TeV
    hdiphoMGGHCuts->Scale(3000/19.6*2.6);
    hdiphoMWH->Scale(3000/19.6*2.1);
    hdiphoMZH->Scale(3000/19.6*2.1);
    hdiphoMTTH->Scale(3000/19.6*4.7);
    hdiphoMHH->Scale(3000/19.6*3.90);
+*/
 
 //   hdiphoMdata->Draw("ep");
    hsPho->Add(hdiphoMGGHCuts);
